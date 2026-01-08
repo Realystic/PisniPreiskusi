@@ -20,6 +20,8 @@ class BazaPP():
     # povezovalna tema-testi
 
 class Tabela:
+    """Osnovni template Tabele na katero bodo navezane druge
+     tabele v projektu (bodo podrazredi razreda Tabela)"""
     
     ime = None
     podatki = None
@@ -50,7 +52,10 @@ class Tabela:
         Sprejeme podatke in jih doda v tabelo,
         v obliki sezama
         '''
-        self.cur
+        self.conn.execute("""
+                          INSERT INTO ? ()
+                          VALUES ()
+                          """, (self.ime))
         
 
 

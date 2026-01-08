@@ -1,0 +1,11 @@
+Zanimive najdbe:
+Če narediš razred (class) Tabela z osnovnimi SQL ukazi za:
+ustvarjanje,
+brisanje tabele/podatkov,
+itd.
+
+In nato narediva podrazred za kakšno drugo tabelo (npr. Teme(Tabela) )
+lahko uporabiva iste metode iz razreda Tabela in če želiva tabeli specifično metodo (npr. ustvari tabelo) lahko definiramo metodo in bo prepisal originalno metodo.
+#
+yield je kot return funkcija sam nas ne vrže izven metode, torej nam dovoli vrniti več vrstic informacij ko uporabljava SELECT.
+#

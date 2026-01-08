@@ -3,6 +3,7 @@ import sqlite3 as dbapi
 pov = dbapi.connect('test.dblite')
 
 def ustvariTab(pov, imeTab, slovStolp):
+    """Ustvari tabelo z imenom imeTab in stolpci iz slovarja stolpcev"""
     cur = pov.cursor()
     niz = ''
 
@@ -10,11 +11,10 @@ def ustvariTab(pov, imeTab, slovStolp):
     for ime, pogoji in slovStolp.items():
         niz += f'{ime} {pogoji},'
     niz = niz.rstrip(',')
-        
 
     cur.execute("""
-                CREATE TABLE ? (
-                ?);
+                CREATE TABLE ?
+                (?);
                 """, (imeTab, niz))
     pov.commit()
     cur.close()
@@ -27,7 +27,7 @@ def dodajanje(pov, tabela, stolpci, podatki):
         '''
         cur = pov.cursor()
         cur.execute("""
-                    INSERT INTO ?(?)
+                    INSERT INTO ? (?)
                     VALUES (?);
                     """, (tabela, stolpci, podatki))
         pov.commit()
@@ -37,5 +37,3 @@ def dodajanje(pov, tabela, stolpci, podatki):
 
 ss = {'id' : "integer PRIMARY KEY",
       'ime' : 'text NOT NULL'}
-
-
