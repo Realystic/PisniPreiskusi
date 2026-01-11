@@ -61,7 +61,7 @@ def prikazi_predmete():
     return podatki
 
 def izbrisi_predmet(id_predmet):
-    """Izbriše predmet iz tabele predmet glede na naziv id predmeta."""
+    """Izbriše predmet iz tabele predmeti glede na ID."""
     with povezava() as pov:
         kaz = pov.cursor()
         kaz.execute("""
