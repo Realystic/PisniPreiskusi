@@ -1,9 +1,10 @@
 import sqlite3
 
 #SQL ukazi za ustvarjanje tabel
-letnik = """
-CREATE TABLE IF NOT EXISTS letnik (
-    id INTEGER PRIMARY KEY AUTOINCREMENT
+letniki = """
+CREATE TABLE IF NOT EXISTS letniki (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    letnik TEXT NOT NULL UNIQUE
 );
 """
 
@@ -18,26 +19,26 @@ CREATE TABLE IF NOT EXISTS predmeti (
 teme = """
 CREATE TABLE IF NOT EXISTS teme (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    tema TEXT NOT NULL
+    tema TEXT NOT NULL UNIQUE
     );
 """
 
 predavalnice= """
 CREATE TABLE IF NOT EXISTS predavalnice (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    ime TEXT,
+    ime TEXT NOT NULL,
     kapaciteta INTEGER
 );
 """
 
-tip = """
+tipi = """
 CREATE TABLE IF NOT EXISTS tip_testa (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    tip TEXT
+    tip TEXT UNIQUE NOT NULL
 );
 """
 
-pisniPreiskus = """
+pisniPreiskusi = """
 CREATE TABLE IF NOT EXISTS pisniPreiskus (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     datum DATETIME,
@@ -48,7 +49,7 @@ CREATE TABLE IF NOT EXISTS pisniPreiskus (
     tip INTEGER,
     FOREIGN KEY (teme) REFERENCES teme(id) ON UPDATE NO ACTION ON DELETE NO ACTION,
     FOREIGN KEY (predavalnica) REFERENCES predavalnice(id) ON UPDATE NO ACTION ON DELETE NO ACTION,
-    FOREIGN KEY (smer) REFERENCES letnik(id) ON UPDATE NO ACTION ON DELETE NO ACTION,
+    FOREIGN KEY (smer) REFERENCES letniki(id) ON UPDATE NO ACTION ON DELETE NO ACTION,
     FOREIGN KEY (predmet) REFERENCES predmeti(id) ON UPDATE NO ACTION ON DELETE NO ACTION,
     FOREIGN KEY (tip) REFERENCES tip_testa(id) ON UPDATE NO ACTION ON DELETE NO ACTION
 );
@@ -71,19 +72,17 @@ def ustvariTabelo(pot, sql_ukaz):
         kaz = pov.cursor()
         kaz.execute(sql_ukaz)
 
+pot = "izpiti.sqlite"
+
 sql_ukazi = [
-    letnik,
+    letniki,
     predmeti,
     teme,
     predavalnice,
-    tip,
-    pisniPreiskus,
+    tipi,
+    pisniPreiskusi,
     povezvovalna
 ]
 
-pot = "izpiti.sqlite"
-
-
 for ukaz in sql_ukazi:
     ustvariTabelo(pot, ukaz)
-
