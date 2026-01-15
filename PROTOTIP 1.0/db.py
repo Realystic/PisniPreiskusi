@@ -1,6 +1,6 @@
 import sqlite3
 
-POT = "izpiti.sqlite"
+POT = "PROTOTIP 1.0\\izpiti.sqlite"
 
 def povezava():
     pov = sqlite3.connect(POT)
