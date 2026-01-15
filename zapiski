@@ -9,3 +9,6 @@ lahko uporabiva iste metode iz razreda Tabela in če želiva tabeli specifično 
 #
 yield je kot return funkcija sam nas ne vrže izven metode, torej nam dovoli vrniti več vrstic informacij ko uporabljava SELECT.
 #
+
+
+https://drawdb.vercel.app/editor?shareId=66be7fbc4069e4ca018289b2297138aa
