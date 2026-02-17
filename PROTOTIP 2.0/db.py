@@ -457,6 +457,74 @@ class PisniPreizkus:
             for v in vrstice
         ]
 
+    @staticmethod
+    def za_predmet(pov, id_predmet):
+        """Vrne vse pisne preizkuse za določen predmet."""
+        kaz = pov.cursor()
+        kaz.execute("""
+            SELECT id, datum, ura, id_predavalnica, id_letnik, id_predmet, id_tip
+            FROM pisni_preizkusi
+            WHERE id_predmet = ?
+            ORDER BY datum ASC, ura ASC
+        """, (id_predmet,))
+        vrstice = kaz.fetchall()
+
+        return [
+            PisniPreizkus(v[1], v[2], v[3], v[4], v[5], v[6], id=v[0])
+            for v in vrstice
+        ]
+
+    @staticmethod
+    def za_letnik(pov, id_letnik):
+        """Vrne vse pisne preizkuse za določen letnik."""
+        kaz = pov.cursor()
+        kaz.execute("""
+            SELECT id, datum, ura, id_predavalnica, id_letnik, id_predmet, id_tip
+            FROM pisni_preizkusi
+            WHERE id_letnik = ?
+            ORDER BY datum ASC, ura ASC
+        """, (id_letnik,))
+        vrstice = kaz.fetchall()
+
+        return [
+            PisniPreizkus(v[1], v[2], v[3], v[4], v[5], v[6], id=v[0])
+            for v in vrstice
+        ]
+
+    @staticmethod
+    def za_predavalnico(pov, id_predavalnica):
+        """Vrne vse pisne preizkuse v določeni predavalnici."""
+        kaz = pov.cursor()
+        kaz.execute("""
+            SELECT id, datum, ura, id_predavalnica, id_letnik, id_predmet, id_tip
+            FROM pisni_preizkusi
+            WHERE id_predavalnica = ?
+            ORDER BY datum ASC, ura ASC
+        """, (id_predavalnica,))
+        vrstice = kaz.fetchall()
+
+        return [
+            PisniPreizkus(v[1], v[2], v[3], v[4], v[5], v[6], id=v[0])
+            for v in vrstice
+        ]
+
+    @staticmethod
+    def v_obdobju(pov, datum_od, datum_do):
+        """Vrne vse pisne preizkuse v določenem časovnem obdobju."""
+        kaz = pov.cursor()
+        kaz.execute("""
+            SELECT id, datum, ura, id_predavalnica, id_letnik, id_predmet, id_tip
+            FROM pisni_preizkusi
+            WHERE datum BETWEEN ? AND ?
+            ORDER BY datum ASC, ura ASC
+        """, (datum_od, datum_do))
+        vrstice = kaz.fetchall()
+
+        return [
+            PisniPreizkus(v[1], v[2], v[3], v[4], v[5], v[6], id=v[0])
+            for v in vrstice
+        ]
+
 
 
 def dodaj_temo_preizkusu(pov, id_teme, id_test):

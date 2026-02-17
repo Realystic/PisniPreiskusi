@@ -1,0 +1,14 @@
+tema,id_predmet
+Limite,1
+Derivacije,1
+Integrali,1
+Matrike,2
+Vektorji,2
+Zanke,3
+Funkcije,3
+Iskanje,4
+Razvrščanje,4
+Valovanje,5
+Termodinamika,5
+Električna polja,6
+Magnetna polja,6
