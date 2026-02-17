@@ -3,11 +3,15 @@ import sqlite3
 #SQL ukazi za ustvarjanje tabel
 """spremenjeno od 1.0: 
 odstranjen je bil stolpec nosilec iz tabele predmeti in pa kapaciteta iz predavalnic - to se zdita manj pomembna podatka v kontekstu projktne naloge.
-Prav tako je bil odstranjen stolpec teme iz tabele pisniPreiskusi, ker se teme povezujejo s testi preko povezovalne
+Prav tako je bil odstranjen stolpec teme iz tabele pisni_preizkusi, ker se teme povezujejo s testi preko povezovalne
 tabele p, kar omogoča več tem na en test. 
 Dodal CASCADE na vse tuje ključe, da se ob brisanju ali posodabljanju vrednosti v primarni tabeli, 
 ustrezno posodobijo ali izbrišejo povezane vrstice v odvisnih tabelah."""
 
+# Tabela letniki:
+# Hrani seznam letnikov (MAT1, APM2, FIZ3, ...).
+# Vsak letnik ima unikatno ime.
+# Predmeti se sklicujejo na letnik preko id_letnik.
 letniki = """
 CREATE TABLE IF NOT EXISTS letniki (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -15,6 +19,10 @@ CREATE TABLE IF NOT EXISTS letniki (
 );
 """
 
+# Tabela predmeti:
+# Hrani predmete, ki pripadajo posameznemu letniku.
+# Vsak predmet ima ime in tuji ključ id_letnik.
+# Ob brisanju letnika se izbrišejo tudi vsi njegovi predmeti (CASCADE).
 predmeti = """
 CREATE TABLE IF NOT EXISTS predmeti (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -26,6 +34,10 @@ CREATE TABLE IF NOT EXISTS predmeti (
 );
 """
 
+# Tabela teme:
+# Hrani teme, ki pripadajo posameznemu predmetu.
+# Tema ima unikatno ime in FK id_predmet.
+# Ob brisanju predmeta se izbrišejo tudi njegove teme (CASCADE).
 teme = """
 CREATE TABLE IF NOT EXISTS teme (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -37,47 +49,63 @@ CREATE TABLE IF NOT EXISTS teme (
 );
 """
 
+# Tabela predavalnice:
+# Hrani seznam predavalnic, kjer se izvajajo pisni preizkusi.
+# Trenutno vsebuje samo ime predavalnice. (lahko se doda kapaciteta, če bo pomembna)
 predavalnice= """
 CREATE TABLE IF NOT EXISTS predavalnice (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    ime TEXT NOT NULL,
-    kapaciteta INTEGER
+    ime TEXT NOT NULL UNIQUE
 );
 """
 
-tipi = """
-CREATE TABLE IF NOT EXISTS tip_testa (
+# Tabela tipi_testov:
+# Hrani tipe testov (npr. kolokvij, izpit).
+# Ime tipa je unikatno.
+tipi_testov = """
+CREATE TABLE IF NOT EXISTS tipi_testov (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     tip TEXT UNIQUE NOT NULL
 );
 """
 
-pisniPreiskusi = """
-CREATE TABLE IF NOT EXISTS pisniPreiskus (
+# Tabela pisni_preizkusi:
+# Hrani vse pisne preizkuse (kolokvije, izpite).
+# Vsebuje datum, uro, predavalnico, letnik, predmet in tip testa.
+# Vsi tuji ključi imajo CASCADE, da se ob brisanju povezanih entitet
+# ustrezno izbrišejo tudi preizkusi.
+pisni_preizkusi = """
+CREATE TABLE IF NOT EXISTS pisni_preizkusi (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    datum DATETIME,
-    id_predavalnica INTEGER,
-    id_letnik INTEGER,
-    id_predmet INTEGER,
-    id_tip INTEGER,
+    datum DATE NOT NULL,
+    ura TIME NOT NULL,
+    id_predavalnica INTEGER NOT NULL,
+    id_letnik INTEGER NOT NULL,
+    id_predmet INTEGER NOT NULL,
+    id_tip INTEGER NOT NULL,
     FOREIGN KEY (id_predavalnica) REFERENCES predavalnice(id)
         ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (id_letnik) REFERENCES letniki(id)
         ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (id_predmet) REFERENCES predmeti(id)
         ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (id_tip) REFERENCES tip_testa(id)
+    FOREIGN KEY (id_tip) REFERENCES tipi_testov(id)
         ON UPDATE CASCADE ON DELETE CASCADE
 );
 """
 
-povezvovalna = """
+# Tabela povezovalna_teme_testi:
+# Povezovalna tabela za many-to-many odnos med temami in pisnimi preizkusi.
+# Omogoča, da ima en preizkus več tem in ena tema več preizkusov.
+# Sestavljen primarni ključ (id_teme, id_test) preprečuje podvajanje.
+# CASCADE poskrbi za čiščenje povezav ob brisanju tem ali preizkusov.
+povezovalna_teme_testi = """
 CREATE TABLE IF NOT EXISTS povezovalna_teme_testi (
     id_teme INTEGER NOT NULL,
     id_test INTEGER NOT NULL,
     PRIMARY KEY (id_teme, id_test),
     FOREIGN KEY (id_teme) REFERENCES teme(id) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (id_test) REFERENCES pisniPreiskus(id) ON UPDATE CASCADE ON DELETE CASCADE
+    FOREIGN KEY (id_test) REFERENCES pisni_preizkusi(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 """
 
@@ -95,9 +123,9 @@ sql_ukazi = [
     predmeti,
     teme,
     predavalnice,
-    tipi,
-    pisniPreiskusi,
-    povezvovalna
+    tipi_testov,
+    pisni_preizkusi,
+    povezovalna_teme_testi
 ]
 
 for ukaz in sql_ukazi:
