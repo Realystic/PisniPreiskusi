@@ -1,6 +1,6 @@
 import sqlite3
 
-#SQL ukazi za ustvarjanje tabel
+#SQL ukazi za ustvarjanje tabel (inicializacija baze)
 """spremenjeno od 1.0: 
 odstranjen je bil stolpec nosilec iz tabele predmeti in pa kapaciteta iz predavalnic - to se zdita manj pomembna podatka v kontekstu projktne naloge.
 Prav tako je bil odstranjen stolpec teme iz tabele pisni_preizkusi, ker se teme povezujejo s testi preko povezovalne

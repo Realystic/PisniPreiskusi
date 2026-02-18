@@ -1,7 +1,27 @@
-ime,id_letnik
-Matematika 1,1
-Algebra,1
-Programiranje 1,2
-Algoritmi,2
-Fizika 3,3
-Elektromagnetizem,3
+id,ime,id_letnik
+1,Algebra in diskretna matematika,1
+2,Diferencialne enačbe,1
+3,Fizikalni praktikum,1
+4,Matematika 2,1
+5,Numerične metode 1,1
+6,Podatkovne baze 1,1
+7,Programiranje 2,1
+8,Statistika,1
+9,Strokovni izbirni predmet,1
+10,Verjetnost,1
+
+11,Analiza 1,2
+12,Linearna algebra,2
+13,Osnove programiranja,2
+
+14,Stohastični procesi,3
+15,Matematično modeliranje,3
+16,Optimizacija,3
+
+17,Fizika 1,4
+18,Mehanika,4
+19,Valovanje in nihanje,4
+
+20,Analiza 2,5
+21,Diskretna matematika,5
+22,Verjetnost in statistika,5

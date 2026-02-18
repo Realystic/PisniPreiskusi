@@ -1,5 +1,11 @@
 import sqlite3
 
+def ustvari_povezavo():
+    """Ustvari povezavo z bazo podatkov in omogoči uporabo tujih ključev."""
+    pov = sqlite3.connect("izpiti.sqlite")
+    pov.execute("PRAGMA foreign_keys = ON;")
+    return pov
+
 class Letnik:
     """Razred, ki predstavlja tabelo letniki in omogoča dodajanje, spreminjanje, brisanje in izpisovanje (enega ali vseh) letnikov."""
 
@@ -222,6 +228,21 @@ class Tema:
             ORDER BY tema ASC
         """, (id_predmet,))
         vrstice = kaz.fetchall()
+        return [Tema(v[1], v[2], id=v[0]) for v in vrstice]
+    
+    @staticmethod
+    def za_preizkus(pov, id_preizkus):
+        """Vrne seznam tem, ki pripadajo določenemu pisnemu preizkusu."""
+        kaz = pov.cursor()
+        kaz.execute("""
+            SELECT t.id, t.tema, t.id_predmet
+            FROM teme t
+            JOIN povezovalna_teme_testi ptt ON t.id = ptt.id_teme
+            WHERE ptt.id_test = ?
+            ORDER BY t.tema ASC
+        """, (id_preizkus,))
+        vrstice = kaz.fetchall()
+
         return [Tema(v[1], v[2], id=v[0]) for v in vrstice]
 
 class Predavalnica:
@@ -548,3 +569,24 @@ def ustvari_preizkus(pov, datum, ura, id_predavalnica, id_letnik, id_predmet, id
         dodaj_temo_preizkusu(pov, id_teme, preizkus.id)
 
     return preizkus
+
+def opis_preizkusa(pov, preizkus):
+    """Vrne lep opis pisnega preizkusa z imeni namesto ID-jev."""
+
+    predmet = Predmet.najdi(pov, preizkus.id_predmet)
+    letnik = Letnik.najdi(pov, preizkus.id_letnik)
+    predavalnica = Predavalnica.najdi(pov, preizkus.id_predavalnica)
+    tip = TipTesta.najdi(pov, preizkus.id_tip)
+    teme = Tema.za_preizkus(pov, preizkus.id)
+
+    seznam_tem = ", ".join(t.tema for t in teme)
+
+    return (
+        f"  ID: {preizkus.id}\n"
+        f"  Termin: {preizkus.datum} ob {preizkus.ura}\n"
+        f"  Letnik: {letnik.letnik}\n"
+        f"  Predmet: {predmet.ime}\n"
+        f"  Predavalnica: {predavalnica.ime}\n"
+        f"  Tip testa: {tip.tip}\n"
+        f"  Teme: {seznam_tem}\n"
+    )
