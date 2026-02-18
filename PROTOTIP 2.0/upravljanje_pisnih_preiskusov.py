@@ -9,6 +9,7 @@ from db import (
     dodaj_temo_preizkusu,
     ustvari_preizkus
 )
+import from upravljanje_podatkov import *
 
 
 def ustvari_povezavo():
@@ -54,7 +55,7 @@ def meni_preizkusi(pov):
 
         izbira = input("Izberi možnost: ")
 
-        if izbira == "1":
+        if izbira == "1"
             dodaj_preizkus_ui(pov)
         elif izbira == "2":
             pregled_po_datumu_ui(pov)
@@ -163,7 +164,7 @@ def pregled_po_letniku_ui(pov):
         print("Ni preizkusov.")
     else:
         for p in preizkusi:
-            print(p)ž
+            print(p)
 
 def izbrisi_preizkus_ui(pov):
     """Prikaže vmesnik za brisanje pisnega preizkusa glede na ID."""
