@@ -3,18 +3,16 @@ import sqlite3
 from upravljanje_podatkov import *
 
 from db import (
-    ustvari_povezavo,
     Letnik,
     Predmet,
     PisniPreizkus,
     Tema,
     Predavalnica,
     TipTesta,
+    ustvari_povezavo,
     ustvari_preizkus,
     opis_preizkusa
 )
-
-
 
 
 

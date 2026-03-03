@@ -21,11 +21,19 @@ Predmet (Predmet, ki pripada določenemu letniku, npr PB1)
     - za_letnik(pov, id_letnik)
     - vsi(pov)
 
-Tema (Učna tema, ki pripada predmetu, npr SQL)
+Tema (Učna tema, ki pripada predmetu (npr. SQL).)
     Atributi
     - id
     - tema
-    - id_predmet: FK na Predmet
+    - id_predmet — FK na Predmet
+    Metode
+    - shrani(pov)
+    - izbrisi(pov)
+    - najdi(pov, id)
+    - za_predmet(pov, id_predmet) — vrne teme določenega predmeta
+    - za_preizkus(pov, id_test) — vrne teme povezane s preizkusom
+    - vse(pov)
+
 
 Predavalnica (Učilnica, kjer se izvaja pisni preizkus, npr 3.10)
     Atributi
@@ -35,7 +43,7 @@ Predavalnica (Učilnica, kjer se izvaja pisni preizkus, npr 3.10)
     - shrani(pov)
     - izbrisi(pov)
     - najdi(pov, id)
-    - vsi(pov)
+    - vse(pov)
 
 TipTesta (Tip pisnega preizkusa, kolokvij/izpit).
     Atributi
@@ -82,6 +90,3 @@ Pomožne funkcije (funkcije.py):
     - predavalnica
     - tip testa
     - seznam tem
-
-
-
