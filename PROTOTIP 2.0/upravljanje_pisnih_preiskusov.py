@@ -1,6 +1,18 @@
 import sqlite3
-from db import *
+
 from upravljanje_podatkov import *
+
+from db import (
+    ustvari_povezavo,
+    Letnik,
+    Predmet,
+    PisniPreizkus,
+    Tema,
+    Predavalnica,
+    TipTesta,
+    ustvari_preizkus,
+    opis_preizkusa
+)
 
 
 
