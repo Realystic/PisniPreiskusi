@@ -109,6 +109,22 @@ CREATE TABLE IF NOT EXISTS povezovalna_teme_testi (
 );
 """
 
+
+# Tabela uporabniki:
+# Hrani registrirane uporabnike spletnega vmesnika.
+# Vsak uporabnik ima ime, e‑pošto, hash gesla in vlogo.
+# E‑pošta mora biti unikatna (UNIQUE), da se uporabnik ne more registrirati dvakrat.
+# Gesla se NE shranjujejo v navadnem tekstu, temveč kot hash (npr. SHA‑256 ali bcrypt).
+uporabniki = """
+CREATE TABLE IF NOT EXISTS uporabniki (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    ime TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    geslo_hash TEXT NOT NULL,
+    vloga TEXT NOT NULL DEFAULT 'student'
+);
+"""
+
 def ustvariTabelo(pot, sql_ukaz):
     """Funkcija, ki izvrši sql ukaz za dano pot do baze."""
     with sqlite3.connect(pot) as pov:
@@ -125,7 +141,8 @@ sql_ukazi = [
     predavalnice,
     tipi_testov,
     pisni_preizkusi,
-    povezovalna_teme_testi
+    povezovalna_teme_testi,
+    uporabniki
 ]
 
 for ukaz in sql_ukazi:
