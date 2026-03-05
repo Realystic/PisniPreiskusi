@@ -76,6 +76,22 @@ PisniPreizkus (pisni preizkus, ki je povezan z letnikom, predmetom, predavalnico
     - v_obdobju(pov, datum_od, datum_do)
 
 
+Uporabnik (Registrirani uporabnik spletnega vmesnika)
+    Atributi
+    - id
+    - ime
+    - email
+    - geslo_hash
+    - vloga (privzeto student)
+    Metode
+    - shrani(pov) — ustvari novega uporabnika ali posodobi obstoječega
+    - izbrisi(pov) — izbriše uporabnika iz baze
+    - najdi(pov, id) — poišče uporabnika po ID-ju
+    - najdi_po_emailu(pov, email) — poišče uporabnika po e‑pošti
+    - vsi(pov) — vrne seznam vseh uporabnikov
+
+
+
 Pomožne funkcije (funkcije.py):
 -ustvari_povezavo()
         Ustvari SQLite povezavo in omogoči tuje ključe.
