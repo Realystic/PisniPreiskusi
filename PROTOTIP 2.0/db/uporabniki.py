@@ -2,11 +2,12 @@ class Uporabnik:
     """Razred, ki predstavlja tabelo uporabniki in omogoča dodajanje, spreminjanje,
     brisanje ter pridobivanje (posameznega ali vseh) uporabnikov iz baze."""
 
-    def __init__(self, ime, email, geslo_hash, vloga="student", id=None):
+    def __init__(self, ime, email, geslo_hash, sol, vloga="student", id=None):
         self.id = id
         self.ime = ime
         self.email = email
         self.geslo_hash = geslo_hash
+        self.sol = sol
         self.vloga = vloga
 
     def __str__(self):
@@ -17,19 +18,17 @@ class Uporabnik:
         kaz = pov.cursor()
 
         if self.id is None:
-            # INSERT
             kaz.execute("""
-                INSERT INTO uporabniki (ime, email, geslo_hash, vloga)
-                VALUES (?, ?, ?, ?)
-            """, (self.ime, self.email, self.geslo_hash, self.vloga))
+                INSERT INTO uporabniki (ime, email, geslo_hash, sol, vloga)
+                VALUES (?, ?, ?, ?, ?)
+            """, (self.ime, self.email, self.geslo_hash, self.sol, self.vloga))
             self.id = kaz.lastrowid
         else:
-            # UPDATE
             kaz.execute("""
                 UPDATE uporabniki
-                SET ime = ?, email = ?, geslo_hash = ?, vloga = ?
+                SET ime = ?, email = ?, geslo_hash = ?, sol = ?, vloga = ?
                 WHERE id = ?
-            """, (self.ime, self.email, self.geslo_hash, self.vloga, self.id))
+            """, (self.ime, self.email, self.geslo_hash, self.sol, self.vloga, self.id))
 
         pov.commit()
 
@@ -48,14 +47,21 @@ class Uporabnik:
         """Najde uporabnika po ID-ju in vrne objekt Uporabnik."""
         kaz = pov.cursor()
         kaz.execute("""
-            SELECT id, ime, email, geslo_hash, vloga
+            SELECT id, ime, email, geslo_hash, sol,vloga
             FROM uporabniki
             WHERE id = ?
         """, (id,))
         vrstica = kaz.fetchone()
 
         if vrstica:
-            return Uporabnik(vrstica[1], vrstica[2], vrstica[3], vrstica[4], id=vrstica[0])
+            return Uporabnik(
+                    vrstica[1],  # ime
+                    vrstica[2],  # email
+                    vrstica[3],  # geslo_hash
+                    vrstica[4],  # sol
+                    vrstica[5],  # vloga
+                    id=vrstica[0]
+                )
         return None
 
     @staticmethod
@@ -63,14 +69,21 @@ class Uporabnik:
         """Najde uporabnika po emailu (uporablja se pri prijavi)."""
         kaz = pov.cursor()
         kaz.execute("""
-            SELECT id, ime, email, geslo_hash, vloga
+            SELECT id, ime, email, geslo_hash, sol, vloga
             FROM uporabniki
             WHERE email = ?
         """, (email,))
         vrstica = kaz.fetchone()
 
         if vrstica:
-            return Uporabnik(vrstica[1], vrstica[2], vrstica[3], vrstica[4], id=vrstica[0])
+            return Uporabnik(
+                    vrstica[1],  # ime
+                    vrstica[2],  # email
+                    vrstica[3],  # geslo_hash
+                    vrstica[4],  # sol
+                    vrstica[5],  # vloga
+                    id=vrstica[0]
+                )
         return None
 
     @staticmethod
@@ -84,4 +97,6 @@ class Uporabnik:
         """)
         vrstice = kaz.fetchall()
 
-        return [Uporabnik(v[1], v[2], v[3], v[4], id=v[0]) for v in vrstice]
+        return [Uporabnik(v[1], v[2], v[3], v[4], v[5], id=v[0])
+                for v in vrstice
+        ]

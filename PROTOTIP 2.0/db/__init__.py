@@ -4,6 +4,7 @@ from .teme import Tema
 from .predavalnice import Predavalnica
 from .tipi_testov import TipTesta
 from .pisni_preizkusi import PisniPreizkus
+from .uporabniki import Uporabnik
 
 from .funkcije import (
     ustvari_povezavo,
@@ -23,4 +24,5 @@ __all__ = [
     "dodaj_temo_preizkusu",
     "ustvari_preizkus",
     "opis_preizkusa",
+    "Uporabnik"
 ]

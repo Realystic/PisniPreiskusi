@@ -1,4 +1,5 @@
 import sqlite3
+import os
 
 from .pisni_preizkusi import PisniPreizkus
 from .predmeti import Predmet
@@ -7,11 +8,10 @@ from .predavalnice import Predavalnica
 from .tipi_testov import TipTesta
 from .teme import Tema
 
+
 def ustvari_povezavo():
-    """Ustvari povezavo z bazo podatkov in omogoči uporabo tujih ključev."""
-    pov = sqlite3.connect("izpiti.sqlite")
-    pov.execute("PRAGMA foreign_keys = ON;")
-    return pov
+    pot = os.path.join(os.path.dirname(__file__), "baza.sqlite")
+    return sqlite3.connect(pot)
 
 
 def dodaj_temo_preizkusu(pov, id_teme, id_test):
