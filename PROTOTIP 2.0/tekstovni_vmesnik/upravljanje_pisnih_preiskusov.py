@@ -1,6 +1,21 @@
 import sqlite3
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from upravljanje_podatkov import *
+from db import (
+    Letnik,
+    Predmet,
+    PisniPreizkus,
+    Tema,
+    Predavalnica,
+    TipTesta,
+    ustvari_povezavo,
+    ustvari_preizkus,
+    opis_preizkusa
+)
 
 from db import (
     Letnik,

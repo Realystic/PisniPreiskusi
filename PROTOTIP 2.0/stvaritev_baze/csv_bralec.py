@@ -1,13 +1,12 @@
 import csv
 import sqlite3
-
-
+import os
 
 pov = sqlite3.connect("izpiti.sqlite")
 pov.execute("PRAGMA foreign_keys = ON;")
 kaz = pov.cursor()
 
-#Pobriše vse obstoječe podatke iz tabel, da se prepreči podvajanje pri ponovnem zagonu skripte #66
+# Pobriše vse obstoječe podatke iz tabel
 kaz.execute("DELETE FROM povezovalna_teme_testi;")
 kaz.execute("DELETE FROM pisni_preizkusi;")
 kaz.execute("DELETE FROM teme;")
@@ -17,8 +16,11 @@ kaz.execute("DELETE FROM tipi_testov;")
 kaz.execute("DELETE FROM letniki;")
 pov.commit()
 
-#Uvozi letnike iz CSV datoteke in jih vstavi v bazo
-with open("CSV_podatki/letniki.csv", encoding="utf-8") as dat:
+# Relativna pot do CSV map (deluje na kateremkoli računalniku)
+CSV_DIR = os.path.join(os.path.dirname(__file__), "CSV_podatki")
+
+# Uvozi letnike
+with open(os.path.join(CSV_DIR, "letniki.csv"), encoding="utf-8") as dat:
     bralec = csv.DictReader(dat)
     for vrstica in bralec:
         id_ = vrstica["id"]
@@ -31,7 +33,7 @@ with open("CSV_podatki/letniki.csv", encoding="utf-8") as dat:
 
 
 #Uvozi predmete iz CSV datoteke in jih vstavi v bazo
-with open("CSV_podatki/predmeti.csv", encoding="utf-8") as dat:
+with open(os.path.join(CSV_DIR, "predmeti.csv"), encoding="utf-8") as dat:
     bralec = csv.DictReader(dat)
     for vrstica in bralec:
         id_ = vrstica["id"]
@@ -45,7 +47,7 @@ with open("CSV_podatki/predmeti.csv", encoding="utf-8") as dat:
 
 
 #Uvozi teme iz CSV datoteke in jih vstavi v bazo
-with open("CSV_podatki/teme.csv", encoding="utf-8") as dat:
+with open(os.path.join(CSV_DIR, "teme.csv"), encoding="utf-8") as dat:
     bralec = csv.DictReader(dat)
     for vrstica in bralec:
         id_ = vrstica["id"]
@@ -59,7 +61,7 @@ with open("CSV_podatki/teme.csv", encoding="utf-8") as dat:
 
 
 #Uvozi predavalnice iz CSV datoteke in jih vstavi v bazo
-with open("CSV_podatki/predavalnice.csv", encoding="utf-8") as dat:
+with open(os.path.join(CSV_DIR, "predavalnice.csv"), encoding="utf-8") as dat:
     bralec = csv.DictReader(dat)
     for vrstica in bralec:
         id_ = vrstica["id"]
@@ -72,7 +74,7 @@ with open("CSV_podatki/predavalnice.csv", encoding="utf-8") as dat:
 
 
 #Uvozi tipe testov iz CSV datoteke in jih vstavi v bazo
-with open("CSV_podatki/tipi_testov.csv", encoding="utf-8") as dat:
+with open(os.path.join(CSV_DIR, "tipi_testov.csv"), encoding="utf-8") as dat:
     bralec = csv.DictReader(dat)
     for vrstica in bralec:
         id_ = vrstica["id"]
@@ -84,7 +86,7 @@ with open("CSV_podatki/tipi_testov.csv", encoding="utf-8") as dat:
 
 
 #Uvozi pisne preizkuse iz CSV datoteke in jih vstavi v bazo
-with open("CSV_podatki/pisni_preizkusi.csv", encoding="utf-8") as dat:
+with open(os.path.join(CSV_DIR, "pisni_preizkusi.csv"), encoding="utf-8") as dat:
     bralec = csv.DictReader(dat)
     for vrstica in bralec:
         id_ = vrstica["id"]
@@ -104,7 +106,7 @@ with open("CSV_podatki/pisni_preizkusi.csv", encoding="utf-8") as dat:
 
 
 #Uvozi povezovalno tabelo teme_testi iz CSV datoteke in jih vstavi v bazo
-with open("CSV_podatki/povezovalna_teme_testi.csv", encoding="utf-8") as dat:
+with open(os.path.join(CSV_DIR, "povezovalna_teme_testi.csv"), encoding="utf-8") as dat:
     bralec = csv.DictReader(dat)
     for vrstica in bralec:
         id_teme = vrstica["id_teme"]

@@ -1,3 +1,8 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
+
 from db import (
     Letnik,
     Predmet,
@@ -58,3 +63,18 @@ def meni_letniki(pov):
         else:
             print("Neveljavna izbira.")
 
+def dodaj_letnik_ui(pov):
+    """UI za dodajanje novega letnika."""
+    print("\n--- Dodaj letnik ---\n")
+
+    letnik = input("Vnesi ime letnika (npr. APM2): ").strip()
+
+    if not letnik:
+        print("Letnik ne sme biti prazen.")
+        return
+
+    # Uporaba razredov iz db:
+    nov = Letnik(letnik)
+    nov.shrani(pov)
+
+    print(f"Letnik '{letnik}' uspešno dodan.")
