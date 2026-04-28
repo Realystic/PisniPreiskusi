@@ -1,3 +1,5 @@
+from db.geslo import sifriraj_geslo
+
 class Uporabnik:
     """Razred, ki predstavlja tabelo uporabniki in omogoča dodajanje, spreminjanje,
     brisanje ter pridobivanje (posameznega ali vseh) uporabnikov iz baze."""
@@ -31,6 +33,21 @@ class Uporabnik:
             """, (self.ime, self.email, self.geslo_hash, self.sol, self.vloga, self.id))
 
         pov.commit()
+    
+    @classmethod
+    def ustvari(cls, pov, ime, email, geslo, vloga="student"):
+        geslo_hash, sol = sifriraj_geslo(geslo)
+
+        u = cls(
+            ime=ime,
+            email=email,
+            geslo_hash=geslo_hash,
+            sol=sol,
+            vloga=vloga
+        )
+        u.shrani(pov)
+        return u
+
 
     def izbrisi(self, pov):
         """Izbriše uporabnika iz baze."""
@@ -86,17 +103,24 @@ class Uporabnik:
                 )
         return None
 
-    @staticmethod
-    def vsi(pov):
-        """Vrne seznam vseh uporabnikov kot objektov."""
-        kaz = pov.cursor()
-        kaz.execute("""
-            SELECT id, ime, email, geslo_hash, vloga
-            FROM uporabniki
-            ORDER BY ime ASC
-        """)
-        vrstice = kaz.fetchall()
+@staticmethod
+def vsi(pov):
+    kaz = pov.cursor()
+    kaz.execute("""
+        SELECT id, ime, email, vloga
+        FROM uporabniki
+        ORDER BY ime ASC
+    """)
+    vrstice = kaz.fetchall()
 
-        return [Uporabnik(v[1], v[2], v[3], v[4], v[5], id=v[0])
-                for v in vrstice
-        ]
+    return [
+        Uporabnik(
+            ime=v[1],
+            email=v[2],
+            geslo_hash=None,
+            sol=None,
+            vloga=v[3],
+            id=v[0]
+        )
+        for v in vrstice
+    ]

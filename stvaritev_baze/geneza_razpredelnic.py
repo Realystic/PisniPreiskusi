@@ -1,3 +1,4 @@
+import os
 import sqlite3
 
 #SQL ukazi za ustvarjanje tabel (inicializacija baze)
@@ -126,25 +127,30 @@ CREATE TABLE IF NOT EXISTS uporabniki (
 );
 """
 
-def ustvariTabelo(pot, sql_ukaz):
+def ustvari_tabelo(pot, sql_ukaz):
     """Funkcija, ki izvrši sql ukaz za dano pot do baze."""
     with sqlite3.connect(pot) as pov:
         pov.execute("PRAGMA foreign_keys = ON;")
         kaz = pov.cursor()
         kaz.execute(sql_ukaz)
 
-pot = "izpiti.sqlite"
+def ustvari_bazo():
+    PROJECT_ROOT = os.path.dirname(os.path.dirname(__file__))
+    pot = os.path.join(PROJECT_ROOT, "db", "baza.sqlite")
 
-sql_ukazi = [
-    letniki,
-    predmeti,
-    teme,
-    predavalnice,
-    tipi_testov,
-    pisni_preizkusi,
-    povezovalna_teme_testi,
-    uporabniki
-]
+    sql_ukazi = [
+        letniki,
+        predmeti,
+        teme,
+        predavalnice,
+        tipi_testov,
+        pisni_preizkusi,
+        povezovalna_teme_testi,
+        uporabniki
+    ]
 
-for ukaz in sql_ukazi:
-    ustvariTabelo(pot, ukaz)
+    for ukaz in sql_ukazi:
+        ustvari_tabelo(pot, ukaz)
+
+    print("Baza ustvarjena!")
+

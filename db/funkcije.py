@@ -10,8 +10,10 @@ from .teme import Tema
 
 
 def ustvari_povezavo():
-    pot = os.path.join(os.path.dirname(__file__), "izpiti.sqlite")
+    pot = os.path.join(os.path.dirname(__file__), "baza.sqlite")
+    pot = os.path.abspath(pot)
     return sqlite3.connect(pot)
+
 
 
 def dodaj_temo_preizkusu(pov, id_teme, id_test):
