@@ -17,18 +17,6 @@ from db import (
     opis_preizkusa
 )
 
-from db import (
-    Letnik,
-    Predmet,
-    PisniPreizkus,
-    Tema,
-    Predavalnica,
-    TipTesta,
-    ustvari_povezavo,
-    ustvari_preizkus,
-    opis_preizkusa
-)
-
 
 
 def glavni_meni():

@@ -10,7 +10,7 @@ from .teme import Tema
 
 
 def ustvari_povezavo():
-    pot = os.path.join(os.path.dirname(__file__), "baza.sqlite")
+    pot = os.path.join(os.path.dirname(__file__), "izpiti.sqlite")
     return sqlite3.connect(pot)
 
 
