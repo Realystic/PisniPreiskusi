@@ -1,9 +1,3 @@
-import sqlite3
-import sys
-import os
-
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-
 from upravljanje_podatkov import *
 from db import (
     Letnik,
@@ -116,8 +110,11 @@ def dodaj_preizkus_ui(pov):
     seznam_tem = [int(x.strip()) for x in seznam_tem.split(",")]
 
     # Vnos datuma in ure
-    datum = input("Vnesi datum (YYYY-MM-DD): ")
+    leto = input("Vnesi leto (YYYY): ")
+    mesec = input("Vnesi mesec (MM): ")
+    dan = input("Vnesi dan (DD): ")
     ura = input("Vnesi uro (HH:MM): ")
+    datum = f"{leto}-{mesec}-{dan}"
 
     # Ustvari preizkus
     preizkus = ustvari_preizkus(
