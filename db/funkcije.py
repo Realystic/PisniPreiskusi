@@ -1,5 +1,6 @@
-import sqlite3
 import os
+import sqlite3
+from datetime import datetime
 
 from .pisni_preizkusi import PisniPreizkus
 from .predmeti import Predmet
@@ -13,7 +14,6 @@ def ustvari_povezavo():
     pot = os.path.join(os.path.dirname(__file__), "baza.sqlite")
     pot = os.path.abspath(pot)
     return sqlite3.connect(pot)
-
 
 
 def dodaj_temo_preizkusu(pov, id_teme, id_test):
@@ -38,8 +38,14 @@ def ustvari_preizkus(pov, datum, ura, id_predavalnica, id_letnik, id_predmet, id
 
     return preizkus
 
+
+def normalen_datum(datum):
+    d = datetime.strptime(datum, "%Y-%m-%d")
+    return d.strftime("%d.%m.%Y")
+
+
 def opis_preizkusa(pov, preizkus):
-    """Vrne lep opis pisnega preizkusa z imeni namesto ID-jev."""
+    """Vrne podatke o preizkusu kot slovar z imeni namesto ID-jev."""
 
     predmet = Predmet.najdi(pov, preizkus.id_predmet)
     letnik = Letnik.najdi(pov, preizkus.id_letnik)
@@ -47,14 +53,15 @@ def opis_preizkusa(pov, preizkus):
     tip = TipTesta.najdi(pov, preizkus.id_tip)
     teme = Tema.za_preizkus(pov, preizkus.id)
 
-    seznam_tem = ", ".join(t.tema for t in teme)
 
-    return (
-        f"  ID: {preizkus.id}\n"
-        f"  Termin: {preizkus.datum} ob {preizkus.ura}\n"
-        f"  Letnik: {letnik.letnik}\n"
-        f"  Predmet: {predmet.ime}\n"
-        f"  Predavalnica: {predavalnica.ime}\n"
-        f"  Tip testa: {tip.tip}\n"
-        f"  Teme: {seznam_tem}\n"
-    )
+    return {
+    "id": preizkus.id,
+    "datum_iso": preizkus.datum,               # YYYY-MM-DD (za sortiranje)
+    "datum": normalen_datum(preizkus.datum), # DD.MM.YYYY (za prikaz)
+    "ura": preizkus.ura,
+    "letnik": letnik.letnik,
+    "predmet": predmet.ime,
+    "predavalnica": predavalnica.ime,
+    "tip": tip.tip,
+    "teme": ", ".join(t.tema for t in teme)
+}

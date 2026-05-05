@@ -127,6 +127,7 @@ def dodaj_preizkus_ui(pov):
 def pregled_vseh_ui(pov):
     """Prikaže vmesnik za pregled vseh pisnih preizkusov."""
     preizkusi = PisniPreizkus.vsi(pov)
+    
 
     print("\n--- Vsi pisni preizkusi ---")
     if not preizkusi:

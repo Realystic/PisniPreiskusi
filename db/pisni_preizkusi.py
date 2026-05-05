@@ -37,7 +37,9 @@ class PisniPreizkus:
 
         pov.commit()
 
-    def izbrisi(self, pov):
+
+
+    def izbrisi(self,pov):
         """Izbriše pisni preizkus iz baze."""
         if self.id is None:
             return

@@ -89,6 +89,7 @@ Uporabnik (Registrirani uporabnik spletnega vmesnika)
     - najdi(pov, id) — poišče uporabnika po ID-ju
     - najdi_po_emailu(pov, email) — poišče uporabnika po e‑pošti
     - vsi(pov) — vrne seznam vseh uporabnikov
+    - ustvari(pov, ime, email, geslo, vloga="student") — zgošči geslo, ustvari sol, nastavi vlogo in shrani novega uporabnika v bazo
 
 
 

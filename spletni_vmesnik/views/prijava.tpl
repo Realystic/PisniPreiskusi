@@ -8,8 +8,8 @@
 
 <form method="post" action="/prijava">
     <div class="mb-3">
-        <label class="form-label">Uporabniško ime</label>
-        <input type="text" name="uporabnik" class="form-control" required>
+        <label class="form-label">Uporabniško ime (Email)</label>
+        <input type="text" name="email" class="form-control" required>
     </div>
 
     <div class="mb-3">

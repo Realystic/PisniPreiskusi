@@ -36,6 +36,7 @@ class Uporabnik:
     
     @classmethod
     def ustvari(cls, pov, ime, email, geslo, vloga="student"):
+        """Ustvari novega uporabnika s podanimi podatki, zgoščenim geslom in ga shrani v bazo."""
         geslo_hash, sol = sifriraj_geslo(geslo)
 
         u = cls(
@@ -101,6 +102,7 @@ class Uporabnik:
                     vrstica[5],  # vloga
                     id=vrstica[0]
                 )
+        
         return None
 
 @staticmethod
