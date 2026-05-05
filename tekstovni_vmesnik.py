@@ -196,3 +196,6 @@ def izbrisi_preizkus_ui(pov):
         print("Preizkus izbrisan.")
     else:
         print("Preizkus ne obstaja.")
+
+if __name__ == "__main__":
+    glavni_meni()

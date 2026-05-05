@@ -17,7 +17,7 @@ app = Bottle()
 SECRET = "TOP_SECRET_1984"
 
 # Da Bottle najde views
-TEMPLATE_PATH.insert(0, os.path.join(os.path.dirname(__file__), 'views'))
+#TEMPLATE_PATH.insert(0, os.path.join(os.path.dirname(__file__), 'views'))
 
 @app.get('/')
 def index():
