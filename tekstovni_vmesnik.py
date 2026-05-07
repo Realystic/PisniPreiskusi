@@ -8,18 +8,18 @@ def glavni_meni():
 
     while True:
         print("\n=== GLAVNI MENI ===\n")
-        print("1) Upravljanje podatkov")
-        print("2) Upravljanje pisnih preizkusov")
+        print("1) Upravljanje pisnih preizkusov")
+        print("2) Upravljanje podatkov")
         print("3) Izhod")
 
-        izbira = input("Izberi možnost: ")
+        izbira = input("Izberi: ")
 
         if izbira == "1":
-            meni_podatki(pov)
-        elif izbira == "2":
             meni_preizkusi(pov)
+        elif izbira == "2":
+            meni_podatki(pov)            
         elif izbira == "3":
-            print("Izhod iz programa.")
+            print("Izhod.")
             break
         else:
             print("Neveljavna izbira.")
