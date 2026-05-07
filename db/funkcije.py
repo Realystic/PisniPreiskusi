@@ -65,3 +65,17 @@ def opis_preizkusa(pov, preizkus):
     "tip": tip.tip,
     "teme": ", ".join(t.tema for t in teme)
 }
+
+def opis_preizkusa_cli(pov, preizkus):
+    """Vrne lep večvrstični opis preizkusa za CLI izpis."""
+    d = opis_preizkusa(pov, preizkus)
+
+    return (
+        f"ID: {d['id']}\n"
+        f"{d['datum']} ob {d['ura']}\n"
+        f"Letnik:       {d['letnik']}\n"
+        f"Predmet:      {d['predmet']}\n"
+        f"Predavalnica: {d['predavalnica']}\n"
+        f"Tip testa:    {d['tip']}\n"
+        f"Teme:         {d['teme']}\n"
+    )

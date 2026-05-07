@@ -1,28 +1,24 @@
-from .letniki import Letnik
+from .pisni_preizkusi import PisniPreizkus
 from .predmeti import Predmet
-from .teme import Tema
+from .letniki import Letnik
 from .predavalnice import Predavalnica
 from .tipi_testov import TipTesta
-from .pisni_preizkusi import PisniPreizkus
+from .teme import Tema
+from .funkcije import ustvari_povezavo, ustvari_preizkus, opis_preizkusa, opis_preizkusa_cli
 from .uporabniki import Uporabnik
-
-from .funkcije import (
-    ustvari_povezavo,
-    dodaj_temo_preizkusu,
-    ustvari_preizkus,
-    opis_preizkusa
-)
+from .geslo import preveri_geslo
 
 __all__ = [
-    "Letnik",
+    "PisniPreizkus",
     "Predmet",
-    "Tema",
+    "Letnik",
     "Predavalnica",
     "TipTesta",
-    "PisniPreizkus",
+    "Tema",
     "ustvari_povezavo",
-    "dodaj_temo_preizkusu",
     "ustvari_preizkus",
     "opis_preizkusa",
-    "Uporabnik"
+    "opis_preizkusa_cli",
+    "Uporabnik",
+    "preveri_geslo",
 ]

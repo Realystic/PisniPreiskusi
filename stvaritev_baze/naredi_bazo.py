@@ -1,17 +1,23 @@
+import os
 from db.funkcije import ustvari_povezavo
+from db.uporabniki import Uporabnik
 from stvaritev_baze.geneza_razpredelnic import ustvari_bazo
 from stvaritev_baze.csv_bralec import napolni_bazo
-from db.uporabniki import Uporabnik
-    
 
-if __name__ == "__main__":
-    ustvari_bazo()
-    napolni_bazo()
+#zbriše obstoječo bazo, če obstaja
+POT = "db/baza.sqlite"
+if os.path.exists(POT):
+    os.remove(POT)
 
-    pov = ustvari_povezavo()
-    Uporabnik.ustvari(pov, "Admin", "admin@fmf.si", "1234", vloga="admin")
-    Uporabnik.ustvari(pov, "Franc", "franc@fmf.si", "geslo123", vloga="student")
 
-    pov.close()
+ustvari_bazo()
+napolni_bazo()
 
-    print("Vse pripravljeno.")
+pov = ustvari_povezavo()
+
+Uporabnik.ustvari(pov, "Admin", "admin@fmf.si", "123", vloga="admin")
+Uporabnik.ustvari(pov, "Upor", "upor@bnik.si", "abnik", vloga="student")
+
+pov.close()
+
+print("Baza nared.")

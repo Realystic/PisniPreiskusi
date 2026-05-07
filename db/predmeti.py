@@ -7,7 +7,7 @@ class Predmet:
         self.id_letnik = id_letnik
     
     def __str__(self):
-        return f"{self.id}: {self.ime} (letnik {self.id_letnik})"
+        return f"{self.id}: {self.ime}"
 
     def shrani(self, pov):
         """Ustvari ali posodobi predmet v bazi."""

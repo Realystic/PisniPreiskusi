@@ -1,23 +1,9 @@
-from bottle import Bottle, run, template, request, redirect, TEMPLATE_PATH, response
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from db.pisni_preizkusi import PisniPreizkus
-from db.predmeti import Predmet
-from db.letniki import Letnik
-from db.predavalnice import Predavalnica
-from db.tipi_testov import TipTesta
-from db.funkcije import ustvari_povezavo, opis_preizkusa
-from db.uporabniki import Uporabnik
-from db.geslo import preveri_geslo
-
+from bottle import Bottle, run, template, request, redirect, response
+from db import *
 
 app = Bottle()
 
 SECRET = "TOP_SECRET_1984"
-
-# Da Bottle najde views
-#TEMPLATE_PATH.insert(0, os.path.join(os.path.dirname(__file__), 'views'))
 
 @app.get('/')
 def index():
@@ -45,10 +31,10 @@ def get_user():
     return user
 
 
-
 @app.get('/prijava')
 def prijava_get():
     return template('prijava', napaka=None, title="Prijava", user=None)
+
 
 @app.post('/prijava')
 def prijava_post():
@@ -67,10 +53,10 @@ def prijava_post():
     return template('prijava', napaka="Napačen email ali geslo.", title="Prijava", user=None)
 
 
-
 def zahtevaj_prijavo():
     if not get_user():
         redirect('/prijava')
+
 
 def prijavi_uporabnika(user):
     response.set_cookie("user_id", str(user.id), secret=SECRET)
@@ -89,6 +75,7 @@ def odjava():
 def registracija_get():
     return template('registracija', napaka=None, title="Registracija", ime="", email="", user=None)
 
+
 @app.post('/registracija')
 def registracija_post():
     ime = request.forms.get('ime')
@@ -98,6 +85,7 @@ def registracija_post():
     pov = ustvari_povezavo()
 
     if Uporabnik.najdi_po_emailu(pov, email):
+        pov.close()
         return template('registracija',
                         napaka="Ta email je že v uporabi.",
                         title="Registracija",
@@ -106,6 +94,7 @@ def registracija_post():
                         user=None)
 
     if not ime or not email or not geslo:
+        pov.close()
         return template('registracija',
                         napaka="Vsa polja morajo biti izpolnjena.",
                         title="Registracija",
@@ -118,8 +107,10 @@ def registracija_post():
 
     response.set_cookie("user_id", str(user.id), secret=SECRET)
     response.set_cookie("vloga", user.vloga, secret=SECRET)
+    pov.close()
 
     return redirect('/')
+
 
 @app.get('/dodaj-preizkus')
 def dodaj_preizkus_get():
@@ -133,6 +124,7 @@ def dodaj_preizkus_get():
     predavalnice = Predavalnica.vse(pov)
     tipi = TipTesta.vsi(pov)
 
+    pov.close()
     return template(
         'dodaj_preizkus',
         predmeti=predmeti,
@@ -143,7 +135,6 @@ def dodaj_preizkus_get():
         user=user,
         title="Dodaj pisni preizkus"
     )
-
 
 
 @app.post('/dodaj-preizkus')
@@ -174,7 +165,10 @@ def dodaj_preizkus_post():
     )
 
     p.shrani(pov)
+    pov.close()
+
     redirect('/')
+
 
 @app.get('/izbrisi/<id:int>')
 def izbrisi_preizkus(id):
@@ -186,12 +180,9 @@ def izbrisi_preizkus(id):
     preizkus = PisniPreizkus.najdi(pov, id)
     if preizkus:
         preizkus.izbrisi(pov)
-
+    pov.close()
 
     redirect('/')
 
 
-
-
-if __name__ == "__main__":
-    run(app, host='localhost', port=8080, debug=True, reloader=True)
+run(app, debug=True, reloader=True)

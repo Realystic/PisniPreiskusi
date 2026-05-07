@@ -154,3 +154,4 @@ def ustvari_bazo():
 
     print("Baza ustvarjena!")
 
+ustvari_bazo
