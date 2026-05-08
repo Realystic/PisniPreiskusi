@@ -7,7 +7,7 @@ from db import (
     ustvari_povezavo
 )
 
-
+#pov = ustvari_povezavo()
 def meni_podatki(pov):
     """Prikaže meni za upravljanje osnovnih podatkov (letniki, predmeti, teme...)."""
     pov = ustvari_povezavo()
@@ -73,3 +73,5 @@ def dodaj_letnik_ui(pov):
     nov.shrani(pov)
 
     print(f"Letnik '{letnik}' uspešno dodan.")
+
+#meni_letniki(pov)
