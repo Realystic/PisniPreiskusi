@@ -97,24 +97,33 @@ pov —  povezava (SQLite connection), do baze, ki ga funkcije uporabljajo za iz
     Metode:
     - shrani(pov) — ustvari novega uporabnika ali posodobi obstoječega
     - izbrisi(pov) — izbriše uporabnika iz baze
-    - najdi(pov, id) — poišče uporabnika po ID-ju
-    - najdi_po_emailu(pov, email) — poišče uporabnika po e‑pošti
-    - vsi(pov) — vrne seznam vseh uporabnikov
+    - najdi(pov, id) — poišče uporabnika po ID-ju; vrne None, če ni id-ja
+    - najdi_po_emailu(pov, email) — poišče uporabnika po e‑pošti; vrne None, če ni email-a
+    - vsi(pov) — vrne seznam vseh uporabnikov, brez zgostitve in soli, urejen po abecedi imen
     - ustvari(pov, ime, email, geslo, vloga="student") — zgošči geslo, ustvari sol, nastavi vlogo in shrani novega uporabnika v bazo
 
 
 
-Pomožne funkcije (funkcije.py):
--ustvari_povezavo()
-        Ustvari SQLite povezavo in omogoči tuje ključe.
--dodaj_temo_preizkusu(pov, id_teme, id_test)
-        Doda zapis v povezovalno tabelo povezovalna_teme_testi.
--ustvari_preizkus(pov, datum, ura, id_predavalnica, id_letnik, id_predmet, id_tip, seznam_tem)
-    Ustvari nov pisni preizkus in ga poveže s seznamom tem.
--opis_preizkusa(pov, preizkus)
-    Vrne lep opis preizkusa z imeni (ne ID-ji):
-    - predmet
-    - letnik
-    - predavalnica
-    - tip testa
-    - seznam tem
+## Pomožne funkcije (funkcije.py):
+- ustvari_povezavo()  
+Ustvari SQLite povezavo z bazo (baza.sqlite)
+- dodaj_temo_preizkusu(pov, id_teme, id_test)  
+Doda zapis v povezovalno tabelo povezovalna_teme_testi. ()
+- ustvari_preizkus(pov, datum, ura, id_predavalnica, id_letnik, id_predmet, id_tip, seznam_tem)  
+Ustvari nov objekt pisni preizkus in ga poveže s seznamom tem. 
+(ne preverja zasedenosti predavalnic, prekrivanja datumov itd)
+- opis_preizkusa(pov, preizkus)  
+Vrne slovar z atributi preizkusa (poimensko, ne z id-ji):
+  - id (preizkusa)
+  - datum_iso - v obliki YYYY-MM-DD
+  - datum - v obliki DD.MM.YYYY
+  - ura
+  - letnik
+  - predmet
+  - predavalnica
+  - tip
+  - teme - seznam tem, ločen z vejico  
+- normalen_datum()
+prevede datum oblike YYYY-MM-DD v "normalen datum" DD.MM.YYYY
+- opis_preizkusa_cli(pov, preizkus)
+lepši izpis za tekstovni vmesnik

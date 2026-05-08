@@ -1,11 +1,10 @@
 import csv
-import sqlite3
 import os
+from db.funkcije import ustvari_povezavo
 
 def napolni_bazo():
-    PROJECT_ROOT = os.path.dirname(os.path.dirname(__file__))
-    pot = os.path.join(PROJECT_ROOT, "db", "baza.sqlite")
-    pov = sqlite3.connect(pot)
+    """Funkcija, ki napolni bazo s podatki iz CSV datotek. Najprej pobriše obstoječe podatke!"""
+    pov = ustvari_povezavo()
 
     pov.execute("PRAGMA foreign_keys = ON;")
     kaz = pov.cursor()

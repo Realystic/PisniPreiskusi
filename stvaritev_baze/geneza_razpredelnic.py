@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS predmeti (
 teme = """
 CREATE TABLE IF NOT EXISTS teme (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    tema TEXT NOT NULL UNIQUE,
+    tema TEXT NOT NULL,
     id_predmet INTEGER NOT NULL,
     FOREIGN KEY (id_predmet) REFERENCES predmeti(id)
         ON UPDATE CASCADE
