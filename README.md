@@ -1,6 +1,9 @@
 # Naslov projekta: Pisni Preiskusi
 ### Namen projekta: Pregled in urejanje pisnih preizkusov na FMF
 
+### Predstavitev baze:
+![ER diagram podatkovne baze](ER.png)
+
 ## Funkcionalnosti:
 ### Tekstovni vmesnik:
 Prvi del: "Upravljanje pisnih preizkusov" povsem deluje:
@@ -18,10 +21,8 @@ Drugi del: "Upravljanje podatkov" je pa (še) ZELO okrnjen
 - vsi lahko vidijo kateri pisni preizusi so vnešeni
 - registracija novega uporabnika (z emailom, ki ga še ni v bazi)
 - uporabniki lahko dodajajo preizkuse
-- admin lahko dodaja in briše preizkuse
-
-
--  že vnešena uporabniška računa:
+- admin lahko dodaja in briše preizkuse  
+- že vnešena uporabniška računa:
   - ime: admin | email:admin@fmf.si | geslo: 123
   - ime: upor | email: upor@bnik.si | geslo: abnik
 ## Navodila za uporabo:
