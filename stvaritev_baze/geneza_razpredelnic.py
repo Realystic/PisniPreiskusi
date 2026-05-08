@@ -121,7 +121,7 @@ CREATE TABLE IF NOT EXISTS uporabniki (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     ime TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
-    geslo_hash TEXT NOT NULL,
+    zgostitev TEXT NOT NULL,
     sol TEXT NOT NULL,
     vloga TEXT NOT NULL DEFAULT 'student'
 );

@@ -4,11 +4,11 @@ class Uporabnik:
     """Razred, ki predstavlja tabelo uporabniki in omogoča dodajanje, spreminjanje,
     brisanje ter pridobivanje (posameznega ali vseh) uporabnikov iz baze."""
 
-    def __init__(self, ime, email, geslo_hash, sol, vloga="student", id=None):
+    def __init__(self, ime, email, zgostitev, sol, vloga="student", id=None):
         self.id = id
         self.ime = ime
         self.email = email
-        self.geslo_hash = geslo_hash
+        self.zgostitev = zgostitev
         self.sol = sol
         self.vloga = vloga
 
@@ -21,28 +21,28 @@ class Uporabnik:
 
         if self.id is None:
             kaz.execute("""
-                INSERT INTO uporabniki (ime, email, geslo_hash, sol, vloga)
+                INSERT INTO uporabniki (ime, email, zgostitev, sol, vloga)
                 VALUES (?, ?, ?, ?, ?)
-            """, (self.ime, self.email, self.geslo_hash, self.sol, self.vloga))
+            """, (self.ime, self.email, self.zgostitev, self.sol, self.vloga))
             self.id = kaz.lastrowid
         else:
             kaz.execute("""
                 UPDATE uporabniki
-                SET ime = ?, email = ?, geslo_hash = ?, sol = ?, vloga = ?
+                SET ime = ?, email = ?, zgostitev = ?, sol = ?, vloga = ?
                 WHERE id = ?
-            """, (self.ime, self.email, self.geslo_hash, self.sol, self.vloga, self.id))
+            """, (self.ime, self.email, self.zgostitev, self.sol, self.vloga, self.id))
 
         pov.commit()
     
     @classmethod
     def ustvari(cls, pov, ime, email, geslo, vloga="student"):
         """Ustvari novega uporabnika s podanimi podatki, zgoščenim geslom in ga shrani v bazo."""
-        geslo_hash, sol = sifriraj_geslo(geslo)
+        zgostitev, sol = sifriraj_geslo(geslo)
 
         u = cls(
             ime=ime,
             email=email,
-            geslo_hash=geslo_hash,
+            zgostitev=zgostitev,
             sol=sol,
             vloga=vloga
         )
@@ -65,7 +65,7 @@ class Uporabnik:
         """Najde uporabnika po ID-ju in vrne objekt Uporabnik."""
         kaz = pov.cursor()
         kaz.execute("""
-            SELECT id, ime, email, geslo_hash, sol,vloga
+            SELECT id, ime, email, zgostitev, sol,vloga
             FROM uporabniki
             WHERE id = ?
         """, (id,))
@@ -75,7 +75,7 @@ class Uporabnik:
             return Uporabnik(
                     vrstica[1],  # ime
                     vrstica[2],  # email
-                    vrstica[3],  # geslo_hash
+                    vrstica[3],  # zgostitev
                     vrstica[4],  # sol
                     vrstica[5],  # vloga
                     id=vrstica[0]
@@ -87,7 +87,7 @@ class Uporabnik:
         """Najde uporabnika po emailu (uporablja se pri prijavi)."""
         kaz = pov.cursor()
         kaz.execute("""
-            SELECT id, ime, email, geslo_hash, sol, vloga
+            SELECT id, ime, email, zgostitev, sol, vloga
             FROM uporabniki
             WHERE email = ?
         """, (email,))
@@ -97,7 +97,7 @@ class Uporabnik:
             return Uporabnik(
                     vrstica[1],  # ime
                     vrstica[2],  # email
-                    vrstica[3],  # geslo_hash
+                    vrstica[3],  # zgostitev
                     vrstica[4],  # sol
                     vrstica[5],  # vloga
                     id=vrstica[0]
@@ -119,7 +119,7 @@ def vsi(pov):
         Uporabnik(
             ime=v[1],
             email=v[2],
-            geslo_hash=None,
+            zgostitev=None,
             sol=None,
             vloga=v[3],
             id=v[0]

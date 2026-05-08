@@ -58,7 +58,7 @@ class Tema:
         return None
 
     @staticmethod
-    def vse(pov):
+    def vsi(pov):
         """Vrne seznam vseh tem kot objektov."""
         kaz = pov.cursor()
         kaz.execute("SELECT id, tema, id_predmet FROM teme ORDER BY tema ASC")

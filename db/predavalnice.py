@@ -56,7 +56,7 @@ class Predavalnica:
         return None
 
     @staticmethod
-    def vse(pov):
+    def vsi(pov):
         """Vrne seznam vseh predavalnic kot objektov."""
         kaz = pov.cursor()
         kaz.execute("SELECT id, ime FROM predavalnice ORDER BY ime ASC")

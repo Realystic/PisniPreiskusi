@@ -151,20 +151,3 @@ class PisniPreizkus:
             PisniPreizkus(v[1], v[2], v[3], v[4], v[5], v[6], id=v[0])
             for v in vrstice
         ]
-
-    @staticmethod
-    def v_obdobju(pov, datum_od, datum_do):
-        """Vrne vse pisne preizkuse v določenem časovnem obdobju."""
-        kaz = pov.cursor()
-        kaz.execute("""
-            SELECT id, datum, ura, id_predavalnica, id_letnik, id_predmet, id_tip
-            FROM pisni_preizkusi
-            WHERE datum BETWEEN ? AND ?
-            ORDER BY datum ASC, ura ASC
-        """, (datum_od, datum_do))
-        vrstice = kaz.fetchall()
-
-        return [
-            PisniPreizkus(v[1], v[2], v[3], v[4], v[5], v[6], id=v[0])
-            for v in vrstice
-        ]

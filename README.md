@@ -1,8 +1,8 @@
 # Naslov projekta: Pisni Preiskusi
-### Namen projekta: Pregled in urejanje pisnih preizkusov na FMF
+## Namen projekta: Pregled in urejanje pisnih preizkusov na FMF
 
 ### Predstavitev baze:
-![ER diagram podatkovne baze](ER.png)
+![ER diagram podatkovne baze](docs\ER.png)
 
 ## Funkcionalnosti:
 ### Tekstovni vmesnik:
@@ -26,13 +26,20 @@ Drugi del: "Upravljanje podatkov" je pa (še) ZELO okrnjen
   - ime: admin | email:admin@fmf.si | geslo: 123
   - ime: upor | email: upor@bnik.si | geslo: abnik
 ## Navodila za uporabo:
-1. ukaz za vzpostavitev baze podatkov:  
+1. ukaz za vzpostavitev baze podatkov: 
+```bash 
 python -m stvaritev_baze.naredi_bazo
+```
 
-2. ukaz za zagon tekstovnega vmesnika:  
+2. ukaz za zagon tekstovnega vmesnika: 
+```bash 
 python -m tekstovni_vmesnik 
+```
 
-3. ukaz za zagon spletnega vmesnika:  
+3. ukaz za zagon spletnega vmesnika: 
+```bash 
 python -m spletni_vmesnik
+```
 
-Avtorja: Štefan Ilja & Franc Križanič
+### Avtorja: 
+Štefan Ilja & Franc Križanič

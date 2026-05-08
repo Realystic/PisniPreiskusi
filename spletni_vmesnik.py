@@ -45,7 +45,7 @@ def prijava_post():
     user = Uporabnik.najdi_po_emailu(pov, email)
 
 
-    if user and preveri_geslo(geslo, user.geslo_hash, user.sol):
+    if user and preveri_geslo(geslo, user.zgostitev, user.sol):
         pov.close()
         return prijavi_uporabnika(user)
 
@@ -121,7 +121,7 @@ def dodaj_preizkus_get():
     pov = ustvari_povezavo()
     predmeti = Predmet.vsi(pov)
     letniki = Letnik.vsi(pov)
-    predavalnice = Predavalnica.vse(pov)
+    predavalnice = Predavalnica.vsi(pov)
     tipi = TipTesta.vsi(pov)
 
     pov.close()
