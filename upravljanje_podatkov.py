@@ -7,7 +7,7 @@ from db import (
     ustvari_povezavo
 )
 
-pov = ustvari_povezavo()
+#pov = ustvari_povezavo()
 def meni_podatki(pov):
     """Prikaže meni za upravljanje osnovnih podatkov (letniki, predmeti, teme...)."""
     pov = ustvari_povezavo()
@@ -80,7 +80,6 @@ def izbrisi_letnik_ui(pov):
     print("\n--- Izbrisi letnik ---\n")
 
     letnik_id = input("Vnesi id letnika (od 1 naprej): ").strip()
-
     if not letnik_id:
         print("ID ne sme biti prazen.")
         return
@@ -93,11 +92,10 @@ def izbrisi_letnik_ui(pov):
             break
         
         print("Neveljaven ukaz.")
-
+    
     if potrditev == "N":
         print("Brisanje prekinjeno.")
         return
-    
     # Uporaba razredov iz db:
     brisi = Letnik("", letnik_id)
     brisi.izbrisi(pov)
@@ -117,27 +115,30 @@ def pregled_letnikov_ui(pov):
     print(f"Letniki uspešno prikazani.")
 
 
-# Meni PREDMETI in ukazi
-#def meni_predmeti(pov):
-#    while True:
-#        print("\n--- Predmeti ---\n")
-#        print("1) Preglej vse predmetee")
-#        print("2) Dodaj predmet")
-#        print("3) Izbriši predmet")
-#        print("4) Nazaj")
-#
-#        izbira = input("Izberi možnost: ")
-#
-#        if izbira == "1":
-#            pregled_predmetov_ui(pov)
-#        elif izbira == "2":
-#            dodaj_premet_ui(pov)
-#        elif izbira == "3":
-#            izbrisi_predmet_ui(pov)
-#        elif izbira == "4":
-#            break
-#        else:
-#            print("Neveljavna izbira.")
-#
 
-meni_letniki(pov)
+
+# Meni PREDMETI in ukazi
+def meni_predmeti(pov):
+    while True:
+        print("\n--- Predmeti ---\n")
+        print("1) Preglej vse predmetee")
+        print("2) Dodaj predmet")
+        print("3) Izbriši predmet")
+        print("4) Nazaj")
+
+        izbira = input("Izberi možnost: ")
+
+        match izbira: # python verzija switch case-a
+            case "1":
+                pregled_predmetov_ui(pov)
+            case "2":
+                dodaj_premet_ui(pov)
+            case "3":
+                izbrisi_predmet_ui(pov)
+            case "4":
+                break
+            case _: # default za match case
+                print("Neveljavna izbira.")
+
+
+#meni_letniki(pov)
