@@ -7,7 +7,7 @@ from db import (
     ustvari_povezavo
 )
 
-#pov = ustvari_povezavo()
+pov = ustvari_povezavo()
 def meni_podatki(pov):
     """Prikaže meni za upravljanje osnovnih podatkov (letniki, predmeti, teme...)."""
     pov = ustvari_povezavo()
@@ -37,6 +37,7 @@ def meni_podatki(pov):
         else:
             print("Neveljavna izbira.")
 
+# MENI LETNIKI in ukazi
 def meni_letniki(pov):
     while True:
         print("\n--- Letniki ---\n")
@@ -73,5 +74,70 @@ def dodaj_letnik_ui(pov):
     nov.shrani(pov)
 
     print(f"Letnik '{letnik}' uspešno dodan.")
+    
+def izbrisi_letnik_ui(pov):
+    """UI za Brisanje letnikov."""
+    print("\n--- Izbrisi letnik ---\n")
 
-#meni_letniki(pov)
+    letnik_id = input("Vnesi id letnika (od 1 naprej): ").strip()
+
+    if not letnik_id:
+        print("ID ne sme biti prazen.")
+        return
+    
+    # zanka za potrditev brisanja
+    potrditev = ""
+    while(potrditev not in {"Y", "N"}):
+        potrditev = input(f"\nPotrdite brisanje letkina z ID '{letnik_id}' (Y/N):").strip()
+        if potrditev in {"Y", "N"}:
+            break
+        
+        print("Neveljaven ukaz.")
+
+    if potrditev == "N":
+        print("Brisanje prekinjeno.")
+        return
+    
+    # Uporaba razredov iz db:
+    brisi = Letnik("", letnik_id)
+    brisi.izbrisi(pov)
+    print(f"Letnik z ID {letnik_id} uspešno izbrisan.")
+
+
+def pregled_letnikov_ui(pov):
+    """UI za Pregled letnikov."""
+    print("\n--- Pregled letnikov ---\n")
+    print(pov)
+    print(Letnik)
+    
+    # Uporaba razredov iz db:
+    print("glavni del:")
+    Letnik.vsi(pov)
+
+    print(f"Letniki uspešno prikazani.")
+
+
+# Meni PREDMETI in ukazi
+#def meni_predmeti(pov):
+#    while True:
+#        print("\n--- Predmeti ---\n")
+#        print("1) Preglej vse predmetee")
+#        print("2) Dodaj predmet")
+#        print("3) Izbriši predmet")
+#        print("4) Nazaj")
+#
+#        izbira = input("Izberi možnost: ")
+#
+#        if izbira == "1":
+#            pregled_predmetov_ui(pov)
+#        elif izbira == "2":
+#            dodaj_premet_ui(pov)
+#        elif izbira == "3":
+#            izbrisi_predmet_ui(pov)
+#        elif izbira == "4":
+#            break
+#        else:
+#            print("Neveljavna izbira.")
+#
+
+meni_letniki(pov)
