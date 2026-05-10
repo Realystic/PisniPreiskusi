@@ -4,11 +4,10 @@ from db.uporabniki import Uporabnik
 from stvaritev_baze.geneza_razpredelnic import ustvari_bazo
 from stvaritev_baze.csv_bralec import napolni_bazo
 
-#zbriše obstoječo bazo, če obstaja
-POT = "db/baza.sqlite"
+POT = os.path.abspath(os.path.join("db", "baza.sqlite"))
+
 if os.path.exists(POT):
     os.remove(POT)
-
 
 ustvari_bazo()
 napolni_bazo()
@@ -20,4 +19,4 @@ Uporabnik.ustvari(pov, "Upor", "upor@bnik.si", "abnik", vloga="student")
 
 pov.close()
 
-print("Baza nared.")
+print("Baza ustvarjena in napolnjena. Admin in Uporabnik dodana.")

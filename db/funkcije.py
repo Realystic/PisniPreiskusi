@@ -17,13 +17,23 @@ def ustvari_povezavo():
 
 
 def dodaj_temo_preizkusu(pov, id_teme, id_test):
-    """Poveže temo s pisnim preizkusom v tabeli povezovalna_teme_testi."""
+    """Poveže temo s pisnim preizkusom, če povezava še ne obstaja."""
     kaz = pov.cursor()
+
+    # preveri, ali povezava že obstaja
     kaz.execute("""
-        INSERT INTO povezovalna_teme_testi (id_teme, id_test)
-        VALUES (?, ?)
+        SELECT 1
+        FROM povezovalna_teme_testi
+        WHERE id_teme = ? AND id_test = ?
     """, (id_teme, id_test))
-    pov.commit()
+
+    if kaz.fetchone() is None:
+        kaz.execute("""
+            INSERT INTO povezovalna_teme_testi (id_teme, id_test)
+            VALUES (?, ?)
+        """, (id_teme, id_test))
+        pov.commit()
+
 
 
 def ustvari_preizkus(pov, datum, ura, id_predavalnica, id_letnik, id_predmet, id_tip, seznam_tem):

@@ -105,24 +105,24 @@ class Uporabnik:
         
         return None
 
-@staticmethod
-def vsi(pov):
-    kaz = pov.cursor()
-    kaz.execute("""
-        SELECT id, ime, email, vloga
-        FROM uporabniki
-        ORDER BY ime ASC
-    """)
-    vrstice = kaz.fetchall()
+    @staticmethod
+    def vsi(pov):
+        kaz = pov.cursor()
+        kaz.execute("""
+            SELECT id, ime, email, vloga
+            FROM uporabniki
+            ORDER BY ime ASC
+        """)
+        vrstice = kaz.fetchall()
 
-    return [
-        Uporabnik(
-            ime=v[1],
-            email=v[2],
-            zgostitev=None,
-            sol=None,
-            vloga=v[3],
-            id=v[0]
-        )
-        for v in vrstice
-    ]
+        return [
+            Uporabnik(
+                ime=v[1],
+                email=v[2],
+                zgostitev=None,
+                sol=None,
+                vloga=v[3],
+                id=v[0]
+            )
+            for v in vrstice
+        ]
