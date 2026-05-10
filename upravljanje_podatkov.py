@@ -7,7 +7,7 @@ from db import (
     ustvari_povezavo
 )
 
-#pov = ustvari_povezavo()
+pov = ustvari_povezavo()
 def meni_podatki(pov):
     """Prikaže meni za upravljanje osnovnih podatkov (letniki, predmeti, teme...)."""
     pov = ustvari_povezavo()
@@ -79,9 +79,18 @@ def izbrisi_letnik_ui(pov):
     """UI za Brisanje letnikov."""
     print("\n--- Izbrisi letnik ---\n")
 
-    letnik_id = input("Vnesi id letnika (od 1 naprej): ").strip()
+    #izpis letnikov
+    tab = Letnik.vsi(pov) # nima nizov letnikov
+    letniki = sorted(list(map(str, tab))) # spremeni v nize in jih sortira po id
+    for l in letniki:
+        print(l)
+    
+    letnik_id = input("Vnesi id letnika (prekini z -1): ").strip()
     if not letnik_id:
         print("ID ne sme biti prazen.")
+        return
+    elif letnik_id == -1:
+        print("Prekinjamo....")
         return
     
     # zanka za potrditev brisanja
@@ -101,16 +110,14 @@ def izbrisi_letnik_ui(pov):
     brisi.izbrisi(pov)
     print(f"Letnik z ID {letnik_id} uspešno izbrisan.")
 
-
 def pregled_letnikov_ui(pov):
     """UI za Pregled letnikov."""
-    print("\n--- Pregled letnikov ---\n")
-    print(pov)
-    print(Letnik)
+    print("\n--- Pregled letnikov (po abecedi)---\n")
     
     # Uporaba razredov iz db:
-    print("glavni del:")
-    Letnik.vsi(pov)
+    tab = Letnik.vsi(pov)
+    for l in tab:
+        print(l)
 
     print(f"Letniki uspešno prikazani.")
 
@@ -141,4 +148,4 @@ def meni_predmeti(pov):
                 print("Neveljavna izbira.")
 
 
-#meni_letniki(pov)
+meni_letniki(pov)
