@@ -12,10 +12,10 @@ Naloga datoteke je samo:
 
 ## TO‑DO seznam
 
-### Letniki (primer že narejen)
-dodaj_letnik_ui(pov) -> je že
-pregled_letnikov_ui(pov)
-izbrisi_letnik_ui(pov)
+### Letniki
+dodaj_letnik_ui(pov) -> narejeno
+pregled_letnikov_ui(pov) -> narejeno
+izbrisi_letnik_ui(pov) -> narejeno
 
 ### Predmeti
 meni_predmeti(pov)
@@ -51,4 +51,4 @@ Vsaka UI funkcija naj sledi istemu vzorcu kot pri letnikih:
 4. pokliči `.shrani(pov)` ali `.izbrisi(pov)`,
 5. izpiši rezultat.
 
-delaj prosim samo z razredi, ne z sql stavki, če kak razred ne dela, spreminjaj db
+delaj prosim samo z razredi, ne z sql stavki, če kak razred ne dela, popravi v db

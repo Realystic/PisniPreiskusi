@@ -15,7 +15,8 @@ Prvi del: "Upravljanje pisnih preizkusov" povsem deluje:
   - predmetu
 - brisanje preizkusov  
 
-Drugi del: "Upravljanje podatkov" je pa (še) ZELO okrnjen
+Drugi del: "Upravljanje podatkov" pa je implementiran le simbolno:
+- dodajanje, brisanje in pregled letnikov
 
 ### Spletni vmesnik:
 - vsi lahko vidijo kateri pisni preizusi so vnešeni

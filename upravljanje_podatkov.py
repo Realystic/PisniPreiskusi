@@ -148,4 +148,4 @@ def meni_predmeti(pov):
                 print("Neveljavna izbira.")
 
 
-meni_letniki(pov)
+#meni_letniki(pov)
