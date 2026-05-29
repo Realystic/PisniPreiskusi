@@ -1,3 +1,5 @@
+from datetime import date
+
 from bottle import Bottle, run, template, request, redirect, response
 from db import *
 
@@ -11,11 +13,16 @@ def index():
     preizkusi = PisniPreizkus.vsi(pov)
 
     podatki = [opis_preizkusa(pov, p) for p in preizkusi]
+    user = get_user()
 
     # sortiranje po datumu (najbolj zgodnji na vrhu)
-    podatki = sorted(podatki, key=lambda p: p["datum_iso"])
+    # če uporabnik ni admin, prikažemo samo preizkuse, ki so danes ali v prihodnosti
+    
+    if user and user.vloga == "admin":
+        podatki = sorted(podatki, key=lambda p: p["datum_iso"])
+    else:
+        podatki = [p for p in podatki if p["datum_iso"] >= date.today().isoformat()]
 
-    user = get_user()
     pov.close()
     return template('index', podatki=podatki, user=user, title="Domov")
 

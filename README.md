@@ -43,4 +43,4 @@ python -m spletni_vmesnik
 ```
 
 ### Avtorja: 
-Štefan Ilja & Franc Križanič
+Štefan Ilija & Franc Križanič
