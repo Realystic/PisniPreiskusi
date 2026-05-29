@@ -62,13 +62,13 @@ def prijava_post():
 
 def zahtevaj_prijavo():
     if not get_user():
-        redirect('/prijava')
+        return redirect('/prijava')
 
 
 def prijavi_uporabnika(user):
     response.set_cookie("user_id", str(user.id), secret=SECRET)
     response.set_cookie("vloga", user.vloga, secret=SECRET)
-    redirect('/')
+    return redirect('/')
 
 
 @app.get('/odjava')
@@ -148,7 +148,7 @@ def dodaj_preizkus_get():
 def dodaj_preizkus_post():
     user = get_user()
     if not user:
-        redirect('/prijava')
+        return redirect('/prijava')
 
     pov = ustvari_povezavo()
 
@@ -174,14 +174,14 @@ def dodaj_preizkus_post():
     p.shrani(pov)
     pov.close()
 
-    redirect('/')
+    return redirect('/')
 
 
 @app.get('/izbrisi/<id:int>')
 def izbrisi_preizkus(id):
     user = get_user()
     if not user or user.vloga != "admin":
-        redirect('/prijava')
+        return redirect('/prijava')
 
     pov = ustvari_povezavo()
     preizkus = PisniPreizkus.najdi(pov, id)
@@ -189,7 +189,7 @@ def izbrisi_preizkus(id):
         preizkus.izbrisi(pov)
     pov.close()
 
-    redirect('/')
+    return redirect('/')
 
 
 run(app, debug=True, reloader=True)

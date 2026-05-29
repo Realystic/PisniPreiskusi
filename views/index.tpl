@@ -35,7 +35,7 @@
             <td>
                 <a href="/izbrisi/{{p['id']}}" class="btn btn-danger btn-sm"
                 onclick="return confirm('Res želiš izbrisati ta preizkus?');">
-                    Izbriši
+                    <i class="fa-solid fa-trash me-1"></i> Izbriši
                 </a>
             </td>
         % end

@@ -3,7 +3,7 @@
 <h2>Registracija</h2>
 
 % if napaka:
-    <p style="color:red">{{napaka}}</p>
+<div class="alert alert-danger">{{napaka}}</div>
 % end
 
 <form method="post" action="/registracija">
