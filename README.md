@@ -2,7 +2,7 @@
 ## Namen projekta: Pregled in urejanje pisnih preizkusov na FMF
 
 ### Predstavitev baze:
-![ER diagram podatkovne baze](docs\ER.png)
+![ER diagram podatkovne baze](docs/ER.png)
 
 ## Funkcionalnosti:
 ### Tekstovni vmesnik:
