@@ -27,11 +27,14 @@ def meni_podatki(pov):
         elif izbira == "2":
             meni_predmeti(pov)
         elif izbira == "3":
-            meni_teme(pov)
+            print("ne-implementirano")
+            #meni_teme(pov)
         elif izbira == "4":
-            meni_predavalnice(pov)
+            print("ne-implementirano")
+            #meni_predavalnice(pov)
         elif izbira == "5":
-            meni_tipi_testov(pov)
+            print("ne-implementirano")
+            #meni_tipi_testov(pov)
         elif izbira == "6":
             break
         else:
@@ -128,7 +131,7 @@ def pregled_letnikov_ui(pov):
 def meni_predmeti(pov):
     while True:
         print("\n--- Predmeti ---\n")
-        print("1) Preglej vse predmetee")
+        print("1) Preglej vse predmete")
         print("2) Dodaj predmet")
         print("3) Izbriši predmet")
         print("4) Nazaj")
@@ -137,15 +140,15 @@ def meni_predmeti(pov):
 
         match izbira: # python verzija switch case-a
             case "1":
-                pregled_predmetov_ui(pov)
+                print("ne-implementirano")
+                #pregled_predmetov_ui(pov)
             case "2":
-                dodaj_premet_ui(pov)
+                print("ne-implementirano")
+                #dodaj_premet_ui(pov)
             case "3":
-                izbrisi_predmet_ui(pov)
+                print("ne-implementirano")
+                #izbrisi_predmet_ui(pov)
             case "4":
                 break
-            case _: # default za match case
+            case _: 
                 print("Neveljavna izbira.")
-
-
-#meni_letniki(pov)
