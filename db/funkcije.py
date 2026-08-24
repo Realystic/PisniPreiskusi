@@ -89,3 +89,21 @@ def opis_preizkusa_cli(pov, preizkus):
         f"Tip testa:    {d['tip']}\n"
         f"Teme:         {d['teme']}\n"
     )
+
+
+def preveri_id(sporocilo, veljavni_objekti):
+    """Sprašuje uporabnika za ID."""
+    if not veljavni_objekti:
+        print("Napaka: na voljo ni veljavnih možnosti.")
+        return None
+
+    veljavni_idji = {obj.id for obj in veljavni_objekti}
+    while True:
+        vnos = input(sporocilo)
+        if not vnos.isdigit():
+            print("Napaka: vnesi veljavno število.")
+            continue
+        if int(vnos) not in veljavni_idji:
+            print("Napaka: ID ne obstaja med ponujenimi možnostmi.")
+            continue
+        return int(vnos)

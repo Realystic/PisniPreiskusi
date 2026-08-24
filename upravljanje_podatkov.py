@@ -7,10 +7,8 @@ from db import (
     ustvari_povezavo
 )
 
-pov = ustvari_povezavo()
 def meni_podatki(pov):
     """Prikaže meni za upravljanje osnovnih podatkov (letniki, predmeti, teme...)."""
-    pov = ustvari_povezavo()
     while True:
         print("\n--- Upravljanje podatkov ---\n")
         print("1) Upravljanje letnikov")
@@ -92,7 +90,11 @@ def izbrisi_letnik_ui(pov):
     if not letnik_id:
         print("ID ne sme biti prazen.")
         return
-    elif letnik_id == -1:
+    if not letnik_id.lstrip('-').isdigit():
+        print("Neveljaven vnos.")
+        return
+    letnik_id = int(letnik_id)
+    if letnik_id == -1:
         print("Prekinjamo....")
         return
     

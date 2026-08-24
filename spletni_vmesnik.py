@@ -123,13 +123,16 @@ def registracija_post():
 def dodaj_preizkus_get():
     user = get_user()
     if not user:
-        redirect('/prijava')
+        return redirect('/prijava')
 
     pov = ustvari_povezavo()
     predmeti = Predmet.vsi(pov)
     letniki = Letnik.vsi(pov)
     predavalnice = Predavalnica.vsi(pov)
     tipi = TipTesta.vsi(pov)
+    teme = Tema.vsi(pov)
+    predmeti_dict = {p.id: p.ime for p in predmeti}
+
 
     pov.close()
     return template(
@@ -139,10 +142,36 @@ def dodaj_preizkus_get():
         predavalnice=predavalnice,
         tipi=tipi,
         napaka=None,
+        datum=None,
+        ura=None,
+        user=user,
+        title="Dodaj pisni preizkus",
+        teme=teme,
+        predmeti_dict=predmeti_dict)
+
+def _napaka_dodaj_preizkus(pov, user, napaka, datum=None, ura=None):
+    """Znova pridobi vse podatke za obrazec 'dodaj_preizkus' in prikaže sporočilo o napaki."""
+    predmeti = Predmet.vsi(pov)
+    letniki = Letnik.vsi(pov)
+    predavalnice = Predavalnica.vsi(pov)
+    tipi = TipTesta.vsi(pov)
+    teme = Tema.vsi(pov)
+    predmeti_dict = {p.id: p.ime for p in predmeti}
+    pov.close()
+    return template(
+        'dodaj_preizkus',
+        predmeti=predmeti,
+        letniki=letniki,
+        predavalnice=predavalnice,
+        tipi=tipi,
+        teme=teme,
+        predmeti_dict=predmeti_dict,
+        napaka=napaka,
+        datum=datum,
+        ura=ura,
         user=user,
         title="Dodaj pisni preizkus"
     )
-
 
 @app.post('/dodaj-preizkus')
 def dodaj_preizkus_post():
@@ -159,19 +188,30 @@ def dodaj_preizkus_post():
     id_predavalnica = request.forms.get('predavalnica')
     id_tip = request.forms.get('tip')
 
+    seznam_tem = request.forms.getall('teme')
+    seznam_tem = [int(t) for t in seznam_tem if t.isdigit()]
+
+    # Preverimo, ali so vsi potrebni podatki prisotni
     if not (datum and ura and id_predmet and id_letnik and id_predavalnica and id_tip):
-        return template('dodaj_preizkus', napaka="Manjkajo podatki.", user=user, title="Dodaj pisni preizkus")
+        return _napaka_dodaj_preizkus(pov, user, "Manjkajo podatki.", datum=datum, ura=ura)
 
-    p = PisniPreizkus(
-        datum=datum,
-        ura=ura,
-        id_predavalnica=id_predavalnica,
-        id_letnik=id_letnik,
-        id_predmet=id_predmet,
-        id_tip=id_tip
+    try:
+        if date.fromisoformat(datum) < date.today():
+            return _napaka_dodaj_preizkus(pov, user, "Datum preizkusa ne more biti v preteklosti.", datum=datum, ura=ura)
+    except ValueError:
+        return _napaka_dodaj_preizkus(pov, user, "Neveljavna oblika datuma.", datum=datum, ura=ura)
+
+    predmet_obj = Predmet.najdi(pov, int(id_predmet))
+    if predmet_obj is None or predmet_obj.id_letnik != int(id_letnik):
+        return _napaka_dodaj_preizkus(pov, user, "Izbrani predmet ne pripada izbranemu letniku.", datum=datum, ura=ura)
+
+    veljavne_teme = {t.id for t in Tema.za_predmet(pov, int(id_predmet))}
+    if not all(id_teme in veljavne_teme for id_teme in seznam_tem):
+        return _napaka_dodaj_preizkus(pov, user, "Izbrane teme ne pripadajo izbranemu predmetu.", datum=datum, ura=ura)
+
+    ustvari_preizkus(
+        pov, datum, ura, id_predavalnica, id_letnik, id_predmet, id_tip, seznam_tem
     )
-
-    p.shrani(pov)
     pov.close()
 
     return redirect('/')

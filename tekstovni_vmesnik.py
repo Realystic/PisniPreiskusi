@@ -1,5 +1,8 @@
 from upravljanje_podatkov import *
+from datetime import date
 from db import *
+import re
+
 
 
 def glavni_meni():
@@ -17,7 +20,7 @@ def glavni_meni():
         if izbira == "1":
             meni_preizkusi(pov)
         elif izbira == "2":
-            meni_podatki(pov)            
+            meni_podatki(pov)
         elif izbira == "3":
             print("Izhod.")
             break
@@ -60,7 +63,6 @@ def meni_preizkusi(pov):
 def pregled_vseh_ui(pov):
     """Prikaže vmesnik za pregled vseh pisnih preizkusov."""
     preizkusi = PisniPreizkus.vsi(pov)
-    
 
     print("\n--- Vsi pisni preizkusi ---")
     if not preizkusi:
@@ -78,32 +80,44 @@ def dodaj_preizkus_ui(pov):
 
     # Izbira predavalnice
     print("\nPredavalnice:")
-    
+
     predavalnice = sorted(Predavalnica.vsi(pov), key=lambda p: p.id)
     for p in predavalnice:
         print(p)
-    id_predavalnica = input("Izberi ID predavalnice: ")
+    id_predavalnica = preveri_id("Izberi ID predavalnice: ", predavalnice)
+    if id_predavalnica is None:
+        print("Ni predavalnic za izbiro. Preizkusa ni mogoce dodati.")
+        return
 
     # Izbira letnika
     print("\nLetniki:")
     letniki = sorted(Letnik.vsi(pov), key=lambda l: l.id)
     for l in letniki:
         print(l)
-    id_letnik = input("Izberi ID letnika: ")
+    id_letnik = preveri_id("Izberi ID letnika: ", letniki)
+    if id_letnik is None:
+        print("Ni letnikov za izbiro. Preizkusa ni mogoče dodati.")
+        return
 
     # Izbira predmeta
     print("\nPredmeti:")
     predmeti = sorted(Predmet.za_letnik(pov, id_letnik), key=lambda p: p.id)
     for p in predmeti:
         print(p)
-    id_predmet = input("Izberi ID predmeta: ")
+    id_predmet = preveri_id("Izberi ID predmeta: ", predmeti)
+    if id_predmet is None:
+        print("Za izbrani letnik ni predmetov. Preizkusa ni mogoče dodati.")
+        return
 
     # Izbira tipa testa
     print("\nTipi testov:")
     tipi = sorted(TipTesta.vsi(pov), key=lambda t: t.id)
     for t in tipi:
         print(t)
-    id_tip = input("Izberi ID tipa testa: ")
+    id_tip = preveri_id("Izberi ID tipa testa: ", tipi)
+    if id_tip is None:
+        print("Ni tipov testov za izbiro. Preizkusa ni mogoče dodati.")
+        return
 
     # Izbira tem
     print("\nTeme:")
@@ -111,15 +125,46 @@ def dodaj_preizkus_ui(pov):
     for t in teme:
         print(t)
 
-    seznam_tem = input("Vnesi ID-ji tem, ločene z vejico (npr. 1,3,5): ")
-    seznam_tem = [int(x.strip()) for x in seznam_tem.split(",")]
+    veljavne_teme = {t.id for t in teme}
+    if not veljavne_teme:
+        print("Za izbrani predmet ni tem. Preizkusa ni mogoče dodati.")
+        return
+    while True:
+        vnos_tem = input("Vnesi ID-je tem, ločene z vejico (npr. 1,3,5): ")
+        deli = [x.strip() for x in vnos_tem.split(",")]
+        if deli and all(d.isdigit() for d in deli) and all(int(d) in veljavne_teme for d in deli):
+            seznam_tem = [int(d) for d in deli]
+            break
+        print("Napaka: vnesi veljavne ID-je tem, ločene z vejico (npr. 1,3,5).")
 
-    # Vnos datuma in ure
-    dan = input("Vnesi dan (DD): ")
-    mesec = input("Vnesi mesec (MM): ")
-    leto = input("Vnesi leto (YYYY): ")
-    ura = input("Vnesi uro (HH:MM): ")
-    datum = f"{leto}-{mesec}-{dan}"
+    # Vnos datuma
+    while True:
+        dan = input("Vnesi dan (DD): ")
+        mesec = input("Vnesi mesec (MM): ")
+        leto = input("Vnesi leto (YYYY): ")
+        if not (dan.isdigit() and mesec.isdigit() and leto.isdigit()):
+            print("Napaka: dan, mesec in leto morajo biti števila.")
+            continue
+        if len(leto) != 4:
+            print("Napaka: leto vnesi v obliki YYYY (npr. 2026).")
+            continue
+        try:
+            datum_preizkusa = date(int(leto), int(mesec), int(dan))
+        except ValueError:
+            print("Napaka: vnesen datum ne obstaja (npr. 31.4. ne obstaja).")
+            continue
+        if datum_preizkusa < date.today():
+            print("Napaka: datum preizkusa ne more biti v preteklosti.")
+            continue
+        break
+    datum = datum_preizkusa.isoformat()
+
+    # Vnos ure
+    while True:
+        ura = input("Vnesi uro (HH:MM): ")
+        if re.match(r"^([01]\d|2[0-3]):[0-5]\d$", ura):
+            break
+        print("Napaka: vnesi uro v obliki HH:MM (npr. 09:30).")
 
     # Ustvari preizkus
     preizkus = ustvari_preizkus(
@@ -132,7 +177,14 @@ def dodaj_preizkus_ui(pov):
 
 def pregled_po_datumu_ui(pov):
     """Prikaže vmesnik za pregled pisnih preizkusov na določen datum."""
-    datum = input("Vnesi datum (YYYY-MM-DD): ")
+    while True:
+        datum = input("Vnesi datum (YYYY-MM-DD): ")
+        try:
+            date.fromisoformat(datum)
+            break
+        except ValueError:
+            print("Napaka: vnesi datum v obliki YYYY-MM-DD (npr. 2026-09-05).")
+
     preizkusi = sorted(PisniPreizkus.na_dan(pov, datum), key=lambda p: p.datum)
 
     print(f"\n--- Preizkusi na dan {datum} ---")
@@ -142,6 +194,7 @@ def pregled_po_datumu_ui(pov):
         for p in preizkusi:
             print(opis_preizkusa_cli(pov, p))
 
+
 def pregled_po_predmetu_ui(pov):
     """Prikaže vmesnik za pregled pisnih preizkusov za določen predmet."""
     print("\nPredmeti:")
@@ -150,7 +203,10 @@ def pregled_po_predmetu_ui(pov):
     for p in predmeti:
         print(p)
 
-    id_predmet = input("Izberi ID predmeta: ")
+    id_predmet = preveri_id("Izberi ID predmeta: ", predmeti)
+    if id_predmet is None:
+        print("Ni predmetov za izbiro.")
+        return
     predmet = Predmet.najdi(pov, id_predmet)
     preizkusi = PisniPreizkus.za_predmet(pov, id_predmet)
 
@@ -161,6 +217,7 @@ def pregled_po_predmetu_ui(pov):
         for p in preizkusi:
             print(opis_preizkusa_cli(pov, p))
 
+
 def pregled_po_letniku_ui(pov):
     """Prikaže vmesnik za pregled pisnih preizkusov za določen letnik."""
     print("\nLetniki:")
@@ -168,7 +225,10 @@ def pregled_po_letniku_ui(pov):
     for l in letniki:
         print(l)
 
-    id_letnik = input("Izberi ID letnika: ")
+    id_letnik = preveri_id("Izberi ID letnika: ", letniki)
+    if id_letnik is None:
+        print("Ni letnikov za izbiro.")
+        return
     letnik = Letnik.najdi(pov, id_letnik)
     preizkusi = PisniPreizkus.za_letnik(pov, id_letnik)
 
@@ -179,6 +239,7 @@ def pregled_po_letniku_ui(pov):
         for p in preizkusi:
             print(opis_preizkusa_cli(pov, p))
 
+
 def izbrisi_preizkus_ui(pov):
     """Prikaže vmesnik za brisanje pisnega preizkusa glede na ID."""
     print("\nVsi preizkusi:")
@@ -186,14 +247,15 @@ def izbrisi_preizkus_ui(pov):
     for p in preizkusi:
         print(opis_preizkusa_cli(pov, p))
 
-    id_preizkus = input("Vnesi ID preizkusa za izbris: ")
+    id_preizkus = preveri_id("Vnesi ID preizkusa za izbris: ", preizkusi)
+    if id_preizkus is None:
+        print("Ni preizkusov za izbris.")
+        return
 
     preizkus = PisniPreizkus.najdi(pov, id_preizkus)
-    if preizkus:
-        preizkus.izbrisi(pov)
-        print("Preizkus izbrisan.")
-    else:
-        print("Preizkus ne obstaja.")
+    preizkus.izbrisi(pov)
+    print("Preizkus izbrisan.")
+
 
 if __name__ == "__main__":
     glavni_meni()

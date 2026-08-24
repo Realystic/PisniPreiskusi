@@ -34,12 +34,12 @@ python -m stvaritev_baze.naredi_bazo
 
 2. ukaz za zagon tekstovnega vmesnika: 
 ```bash 
-python -m tekstovni_vmesnik 
+python tekstovni_vmesnik.py
 ```
 
 3. ukaz za zagon spletnega vmesnika: 
 ```bash 
-python -m spletni_vmesnik
+python spletni_vmesnik.py
 ```
 
 ### Avtorja: 

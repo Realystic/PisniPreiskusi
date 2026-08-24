@@ -8,14 +8,14 @@
 
 <form method="post" action="/dodaj-preizkus">
     <div class="mb-3">
-        <label class="form-label">Datum</label>
-        <input type="date" name="datum" class="form-control" required>
-    </div>
+    <label class="form-label">Datum</label>
+    <input type="date" name="datum" class="form-control" value="{{datum or ''}}" required>
+</div>
 
-    <div class="mb-3">
-        <label class="form-label">Ura</label>
-        <input type="time" name="ura" class="form-control" required>
-    </div>
+<div class="mb-3">
+    <label class="form-label">Ura</label>
+    <input type="time" name="ura" class="form-control" value="{{ura or ''}}" required>
+</div>
 
     <div class="mb-3">
         <label class="form-label">Letnik</label>
@@ -52,6 +52,22 @@
             % end
         </select>
     </div>
+
+    <div class="mb-3">
+    <label class="form-label">Teme</label>
+    % if not teme:
+        <p class="text-muted">Ni vnesenih tem.</p>
+    % else:
+        % for t in teme:
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="teme" value="{{t.id}}" id="tema-{{t.id}}">
+                <label class="form-check-label" for="tema-{{t.id}}">
+                    {{t.tema}} <span class="text-muted">({{predmeti_dict.get(t.id_predmet, '?')}})</span>
+                </label>
+            </div>
+        % end
+    % end
+</div>
 
     <button type="submit" class="btn btn-primary">Dodaj</button>
 </form>
