@@ -4,7 +4,8 @@ from db.uporabniki import Uporabnik
 from stvaritev_baze.geneza_razpredelnic import ustvari_bazo
 from stvaritev_baze.csv_bralec import napolni_bazo
 
-POT = os.path.abspath(os.path.join("db", "baza.sqlite"))
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+POT = os.path.join(PROJECT_ROOT, "db", "baza.sqlite")
 
 if os.path.exists(POT):
     os.remove(POT)

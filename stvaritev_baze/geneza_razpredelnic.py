@@ -153,5 +153,3 @@ def ustvari_bazo():
         ustvari_tabelo(pot, ukaz)
 
     print("Baza ustvarjena!")
-
-ustvari_bazo
