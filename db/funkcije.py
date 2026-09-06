@@ -13,7 +13,9 @@ from .teme import Tema
 def ustvari_povezavo():
     pot = os.path.join(os.path.dirname(__file__), "baza.sqlite")
     pot = os.path.abspath(pot)
-    return sqlite3.connect(pot)
+    pov = sqlite3.connect(pot)
+    pov.execute("PRAGMA foreign_keys = ON;")
+    return pov
 
 
 def dodaj_temo_preizkusu(pov, id_teme, id_test):
